@@ -1,17 +1,12 @@
-﻿using System;
+﻿using Domain.Dtos;
 using Domain.Entity;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Dtos;
 
 namespace Service
 {
     public interface ILivroService
     {
         Task<string> CreateLivro(LivroEntity param);
-        Task<string> GetLivro(LivroEntity param);
+        Task<LivroEntity> GetLivro(LivroEntity param);
         Task<string> UpdateLivro(LivroEntity param);
         Task<string> DeleteLivro(LivroEntity param);
 

@@ -1,8 +1,6 @@
 ﻿using Domain.Dtos;
 using Domain.Entity;
 using Repository;
-using System;
-using System.Threading.Tasks;
 
 namespace Service
 {
@@ -38,20 +36,42 @@ namespace Service
             }
         }
 
-        public async Task<string> GetLivro(LivroEntity livroEntity)
+        public async Task<LivroEntity> GetLivro(LivroEntity livroEntity)
         {
             try
             {
+                var retGetLivro = await _livroRepository.GetLivro(livroEntity);
 
-                var result = _livroRepository.GetLivro(livroEntity);
-                return await result;
+                if (retGetLivro == null)
+                {
+                    return null;
+                }
+
+                var retLivroAssunto = await _livroRepository.GetLivroAssunto(retGetLivro.Codl);
+
+                var retLivroAutor = await _livroRepository.GetLivroAutor(retGetLivro.Codl);
+
+                var result = new LivroEntity
+                {
+                    Codl = retGetLivro.Codl,
+                    Titulo = retGetLivro.Titulo,
+                    Editora = retGetLivro.Editora,
+                    Edicao = retGetLivro.Edicao,
+                    AnoPublicacao = retGetLivro.AnoPublicacao,
+                    Status = retGetLivro.Status,
+                    LivroAssuntoEntity = retLivroAssunto,
+                    LivroAutores = retLivroAutor.ToList()
+                };
+
+                return result;
             }
             catch (Exception ex)
             {
-
-                return $"Erro ao obter livro: {ex.Message}";
+                //_logger.LogError(ex, "Erro ao obter livro com Codl: {Codl}", livroEntity.Codl);
+                return null;
             }
         }
+
 
         public async Task<string> UpdateLivro(LivroEntity livroEntity)
         {
@@ -150,7 +170,7 @@ namespace Service
             try
             {
                 var result = await _livroRepository.CreateAutor(autorEntity);
-                return  "";
+                return "";
             }
             catch (Exception ex)
             {

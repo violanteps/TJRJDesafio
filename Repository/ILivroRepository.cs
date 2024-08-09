@@ -6,7 +6,7 @@ namespace Repository
     public interface ILivroRepository
     {
         Task<int> CreateLivro(LivroEntity livroEntity);
-        Task<string> GetLivro(LivroEntity param);
+        Task<LivroEntity> GetLivro(LivroEntity param);
         Task<string> UpdateLivro(LivroEntity param);
         Task<string> DeleteLivro(LivroEntity param);
 
@@ -31,8 +31,11 @@ namespace Repository
         Task<string> DeleteLivroValor(int livroCodl, int vendaCodv);
         
         Task<int> CreateLivroAutor(LivroAutorEntity livroAutorEntity);
+        Task<IEnumerable<LivroAutorEntity>> GetLivroAutor(int livroCodl);
         Task<string> DeleteLivroAutor(int livroCodl, int autorCodAu);
+        
         Task<int> CreateLivroAssunto(LivroAssuntoEntity livroAssuntoEntity);
+        Task<LivroAssuntoEntity> GetLivroAssunto(int livroCodl);
         Task<string> DeleteLivroAssunto(int livroCodl, int assuntoCodAs);
 
 

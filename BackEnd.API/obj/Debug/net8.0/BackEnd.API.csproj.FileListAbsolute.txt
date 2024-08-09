@@ -45,3 +45,6 @@ C:\GIT\TJRJDesafio\TJRJDesafio\BackEnd.API\obj\Debug\net8.0\refint\BackEnd.API.d
 C:\GIT\TJRJDesafio\TJRJDesafio\BackEnd.API\obj\Debug\net8.0\BackEnd.API.pdb
 C:\GIT\TJRJDesafio\TJRJDesafio\BackEnd.API\obj\Debug\net8.0\BackEnd.API.genruntimeconfig.cache
 C:\GIT\TJRJDesafio\TJRJDesafio\BackEnd.API\obj\Debug\net8.0\ref\BackEnd.API.dll
+C:\GIT\TJRJDesafio\TJRJDesafio\BackEnd.API\obj\Debug\net8.0\BackEnd.API.sourcelink.json
+C:\GIT\TJRJDesafio\TJRJDesafio\BackEnd.API\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\GIT\TJRJDesafio\TJRJDesafio\BackEnd.API\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll

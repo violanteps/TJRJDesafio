@@ -1,8 +1,6 @@
 using AutoMapper;
-using Domain.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Service;
-using System;
 
 namespace BackEnd.API.Controllers
 {
@@ -27,7 +25,7 @@ namespace BackEnd.API.Controllers
             try
             {
                 IEnumerable<object> relatorio;
-                 if (tipoRelatorio == 1)
+                if (tipoRelatorio == 1)
                 {
                     relatorio = await _livroService.GerarRelatorioPorAutorComAssunto(tipoRelatorio);
                 }

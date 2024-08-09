@@ -17,6 +17,5 @@
         public LivroAssuntoEntity LivroAssuntoEntity { get; set; }
 
         public List<LivroAutorEntity> LivroAutores { get; set; }
-
     }
 }

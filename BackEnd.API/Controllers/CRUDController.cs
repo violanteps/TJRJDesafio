@@ -73,14 +73,39 @@ namespace BackEnd.API.Controllers
             }
         }
 
-        [HttpPost]
+        //[HttpPost]
+        //[Route("GetLivro")]
+        //public IActionResult GetLivro(LivroModel parameters)
+        //{
+        //    try
+        //    {
+        //        var resultMapper = _mapper.Map<LivroEntity>(parameters);
+        //        var ret = _livroService.GetLivro(resultMapper);
+        //        return Ok(ret);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex, "Erro ao buscar livro");
+        //        return StatusCode(500, "Erro ao buscar livro");
+        //    }
+        //}
+
+        [HttpGet]
         [Route("GetLivro")]
-        public IActionResult GetLivro(LivroModel parameters)
+        public async Task<IActionResult> GetLivro([FromQuery] int codl)
         {
             try
             {
+                var parameters = new LivroModel { Codl = codl };
                 var resultMapper = _mapper.Map<LivroEntity>(parameters);
-                var ret = _livroService.GetLivro(resultMapper);
+
+                var ret = await _livroService.GetLivro(resultMapper);
+
+                if (ret == null)
+                {
+                    return NotFound("Livro não encontrado.");
+                }
+
                 return Ok(ret);
             }
             catch (Exception ex)
@@ -89,6 +114,7 @@ namespace BackEnd.API.Controllers
                 return StatusCode(500, "Erro ao buscar livro");
             }
         }
+
 
         [HttpPost]
         [Route("GetAutor")]

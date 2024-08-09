@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Domain.Dtos;
 using Domain.Entity;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Data;
 using System.Data.SqlClient;
@@ -12,6 +13,8 @@ namespace Repository
 
         private readonly string _connectionString;
         private readonly IDbConnection _connection;
+        private readonly ILogger<LivroRepository> _logger;
+
         public LivroRepository(IDbConnection connection)
         {
             _connection = connection;
@@ -96,24 +99,27 @@ namespace Repository
             }
         }
 
-        public async Task<string> GetLivro(LivroEntity livroEntity)
+        public async Task<LivroEntity> GetLivro(LivroEntity livroEntity)
         {
             try
             {
                 using (var connection = new SqlConnection(_connectionString))
                 {
-                    var query = "SELECT * FROM Livro WHERE Codl = @Codl";
+                    await connection.OpenAsync();
+                    var query = "SELECT Codl, Titulo, Editora, Edicao, AnoPublicacao, StatusReg FROM Livro WHERE Codl = @Codl";
                     var livro = await connection.QueryFirstOrDefaultAsync<LivroEntity>(query, new { Codl = livroEntity.Codl });
-                    return livro != null ? JsonConvert.SerializeObject(livro) : "Livro não encontrado";
+                    return livro;
                 }
             }
             catch (SqlException ex)
             {
-                return "Erro de banco de dados: " + ex.Message;
+                _logger.LogError(ex, "Erro de banco de dados ao buscar o livro com Codl: {Codl}", livroEntity.Codl);
+                throw new Exception("Erro ao acessar o banco de dados.", ex); // Lança uma exceção personalizada
             }
             catch (Exception ex)
             {
-                return "Erro " + ex.Message;
+                _logger.LogError(ex, "Erro desconhecido ao buscar o livro com Codl: {Codl}", livroEntity.Codl);
+                throw new Exception("Erro ao processar a requisição.", ex); // Lança uma exceção personalizada
             }
         }
 
@@ -1043,6 +1049,36 @@ namespace Repository
                 throw new Exception("Erro ao tentar iniciar a transação: " + ex.Message);
             }
         }
+        
+        public async Task<IEnumerable<LivroAutorEntity>> GetLivroAutor(int livroCodl)
+        {
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    await connection.OpenAsync();
+                    var query = @"  SELECT Livro_Codl, Autor_CodAu, StatusReg
+                                      FROM Livro_Autor
+                                     WHERE Livro_Codl = @LivroCodl
+                                       AND StatusReg = 1"; 
+
+                    var livroAutores = await connection.QueryAsync<LivroAutorEntity>(query, new { LivroCodl = livroCodl });
+                    return livroAutores;
+                }
+            }
+            catch (SqlException ex)
+            {
+                _logger.LogError(ex, "Erro de banco de dados ao buscar os autores do livro com Codl: {LivroCodl}", livroCodl);
+                throw new Exception("Erro ao acessar o banco de dados.", ex);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro desconhecido ao buscar os autores do livro com Codl: {LivroCodl}", livroCodl);
+                throw new Exception("Erro ao processar a requisição.", ex);
+            }
+        }
+
+
 
         public async Task<string> DeleteLivroAutor(int livroCodl, int autorCodAu)
         {
@@ -1151,6 +1187,37 @@ namespace Repository
                 throw new Exception("Erro ao tentar iniciar a transação: " + ex.Message);
             }
         }
+
+        public async Task<LivroAssuntoEntity> GetLivroAssunto(int livroCodl)
+        {
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    await connection.OpenAsync();
+                    var query = @"
+                                    SELECT Livro_Codl, Assunto_CodAs, StatusReg
+                                      FROM Livro_Assunto
+                                     WHERE Livro_Codl = @LivroCodl 
+                                       AND StatusReg = 1";
+
+                    var livroAssuntos = await connection.QueryFirstOrDefaultAsync<LivroAssuntoEntity>(query, new { LivroCodl = livroCodl });
+                    return livroAssuntos;
+                }
+            }
+            catch (SqlException ex)
+            {
+                _logger.LogError(ex, "Erro de banco de dados ao buscar os assuntos do livro com Codl: {LivroCodl}", livroCodl);
+                throw new Exception("Erro ao acessar o banco de dados.", ex);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro desconhecido ao buscar os assuntos do livro com Codl: {LivroCodl}", livroCodl);
+                throw new Exception("Erro ao processar a requisição.", ex);
+            }
+        }
+
+
         public async Task<string> DeleteLivroAssunto(int livroCodl, int assuntoCodAs)
         {
             try
