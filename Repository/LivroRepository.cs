@@ -36,7 +36,7 @@ namespace Repository
                         try
                         {
                             var query = @"  INSERT INTO Livro (Titulo, Editora, Edicao, AnoPublicacao, StatusReg, DataCriacao, UltimaAtualizacao) 
-                                            VALUES (@Titulo, @Editora, @Edicao, @AnoPublicacao, @Status, @DataCriacao, @UltimaAtualizacao);
+                                            VALUES (@Titulo, @Editora, @Edicao, @AnoPublicacao, @StatusReg, @DataCriacao, @UltimaAtualizacao);
                                             SELECT CAST(SCOPE_IDENTITY() as int);";
 
                             // Passando os valores dos campos adicionais que foram incluídos
@@ -46,7 +46,7 @@ namespace Repository
                                 livroEntity.Editora,
                                 livroEntity.Edicao,
                                 livroEntity.AnoPublicacao,
-                                livroEntity.Status,
+                                livroEntity.StatusReg,
                                 DataCriacao = DateTime.Now,
                                 UltimaAtualizacao = DateTime.Now
                             };
@@ -128,7 +128,7 @@ namespace Repository
                                 livroEntity.Editora,
                                 livroEntity.Edicao,
                                 livroEntity.AnoPublicacao,
-                                livroEntity.Status,
+                                livroEntity.StatusReg,
                                 UltimaAtualizacao = DateTime.Now,
                                 livroEntity.Codl
                             };
@@ -990,19 +990,18 @@ namespace Repository
                         try
                         {
                             var query = @"  INSERT INTO Livro_Autor (Livro_Codl, Autor_CodAu, StatusReg, DataCriacao, UltimaAtualizacao) 
-                                            VALUES (@Livro_Codl, @Autor_CodAu, @StatusReg, @DataCriacao, @UltimaAtualizacao);
-                                            SELECT CAST(SCOPE_IDENTITY() as int);";
+                                            VALUES (@Livro_Codl, @Autor_CodAu, @StatusReg, @DataCriacao, @UltimaAtualizacao);";
 
                             var parameters = new
                             {
                                 livroAutorEntity.Livro_Codl,
                                 livroAutorEntity.Autor_CodAu,
-                                StatusReg = 1, // Status ativo
+                                StatusReg = 1, 
                                 DataCriacao = DateTime.Now,
                                 UltimaAtualizacao = DateTime.Now
                             };
 
-                            var livroAutorId = await connection.QuerySingleAsync<int>(query, parameters, transaction: transaction);
+                            var livroAutorId = await connection.QueryFirstOrDefaultAsync<int>(query, parameters, transaction: transaction);
 
                            
                             transaction.Commit();
@@ -1129,8 +1128,7 @@ namespace Repository
                         try
                         {
                             var query = @"  INSERT INTO Livro_Assunto (Livro_Codl, Assunto_CodAs, StatusReg, DataCriacao, UltimaAtualizacao) 
-                                            VALUES (@Livro_Codl, @Assunto_CodAs, @StatusReg, @DataCriacao, @UltimaAtualizacao);
-                                            SELECT CAST(SCOPE_IDENTITY() as int);";
+                                            VALUES (@Livro_Codl, @Assunto_CodAs, @StatusReg, @DataCriacao, @UltimaAtualizacao);";
 
                             var parameters = new
                             {
@@ -1141,7 +1139,7 @@ namespace Repository
                                 UltimaAtualizacao = DateTime.Now
                             };
 
-                            var livroAssuntoId = await connection.QuerySingleAsync<int>(query, parameters, transaction: transaction);
+                            var livroAssuntoId = await connection.QueryFirstOrDefaultAsync<int>(query, parameters, transaction: transaction);
 
                             transaction.Commit();
 

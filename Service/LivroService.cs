@@ -1,6 +1,7 @@
 ﻿using Domain.Dtos;
 using Domain.Entity;
 using Repository;
+using System.Xml;
 
 namespace Service
 {
@@ -17,24 +18,43 @@ namespace Service
         {
             try
             {
+                
                 if (livroEntity.LivroAutores == null || livroEntity.LivroAutores.Count == 0)
-                    return $"Erro ao criar livro. Deve existir ao menos 1 autor";
-                //E preciso que exista o Autor
-                //var result = _livroRepository.GetAutor(autorEntity);
-                //E preciso que exista o Assunto
+                    return "Erro ao criar livro. Deve existir ao menos 1 autor.";
 
-                var result = await _livroRepository.CreateLivro(livroEntity);
+                if (livroEntity.LivroAssuntoEntity == null || livroEntity.LivroAssuntoEntity.Assunto_CodAs == 0)
+                    return "Erro ao criar livro. O assunto do livro deve ser informado.";
+                
+                var livroId = await _livroRepository.CreateLivro(livroEntity);
+                
+                var livroAssuntoEntity = new LivroAssuntoEntity
+                {
+                    Livro_Codl = livroId,
+                    Assunto_CodAs = livroEntity.LivroAssuntoEntity.Assunto_CodAs,
+                    StatusReg = 1
+                };
+                
+                _ = await _livroRepository.CreateLivroAssunto(livroAssuntoEntity);
+                
+                foreach (var autor in livroEntity.LivroAutores)
+                {
+                    var livroAutorEntity = new LivroAutorEntity
+                    {
+                        Livro_Codl = livroId,
+                        Autor_CodAu = autor.Autor_CodAu,
+                        StatusReg = 1
+                    };
+                    _ = await _livroRepository.CreateLivroAutor(livroAutorEntity);
+                }
 
-                var result2 = 1;
-
-                return "OK";
+                return "Livro criado com sucesso.";
             }
             catch (Exception ex)
             {
-
                 return $"Erro ao criar livro: {ex.Message}";
             }
         }
+
 
         public async Task<LivroEntity> GetLivro(LivroEntity livroEntity)
         {
@@ -58,7 +78,7 @@ namespace Service
                     Editora = retGetLivro.Editora,
                     Edicao = retGetLivro.Edicao,
                     AnoPublicacao = retGetLivro.AnoPublicacao,
-                    Status = retGetLivro.Status,
+                    StatusReg = retGetLivro.StatusReg,
                     LivroAssuntoEntity = retLivroAssunto,
                     LivroAutores = retLivroAutor.ToList()
                 };
