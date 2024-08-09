@@ -59,12 +59,12 @@ namespace BackEnd.API.Controllers
 
         [HttpPost]
         [Route("CreateAssunto")]
-        public IActionResult CreateAssunto(AssuntoModel parameters)
+        public async Task<IActionResult> CreateAssunto(AssuntoModel parameters)
         {
             try
             {
                 var resultMapper = _mapper.Map<AssuntoEntity>(parameters);
-                var ret = _livroService.CreateAssunto(resultMapper);
+                var ret = await _livroService.CreateAssunto(resultMapper);
                 return Ok(ret);
             }
             catch (Exception ex)

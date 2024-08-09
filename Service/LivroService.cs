@@ -142,7 +142,7 @@ namespace Service
             try
             {
                 var result = await _livroRepository.CreateAssunto(assuntoEntity);
-                return "";
+                return $"Assunto {assuntoEntity.Descricao} criado com sucesso."; ;
             }
             catch (Exception ex)
             {
@@ -208,8 +208,7 @@ namespace Service
             }
             catch (Exception ex)
             {
-
-                return $"Erro ao criar autor: {ex.Message}";
+                return $"Erro ao criar autor {autorEntity.Nome}. {ex.Message}";
             }
         }
 
