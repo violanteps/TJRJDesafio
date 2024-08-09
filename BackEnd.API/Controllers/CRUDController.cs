@@ -72,23 +72,7 @@ namespace BackEnd.API.Controllers
                 return StatusCode(500, "Erro ao criar assunto");
             }
         }
-
-        //[HttpPost]
-        //[Route("GetLivro")]
-        //public IActionResult GetLivro(LivroModel parameters)
-        //{
-        //    try
-        //    {
-        //        var resultMapper = _mapper.Map<LivroEntity>(parameters);
-        //        var ret = _livroService.GetLivro(resultMapper);
-        //        return Ok(ret);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, "Erro ao buscar livro");
-        //        return StatusCode(500, "Erro ao buscar livro");
-        //    }
-        //}
+        
 
         [HttpGet]
         [Route("GetLivro")]
@@ -201,9 +185,61 @@ namespace BackEnd.API.Controllers
             }
         }
 
-        [HttpPost]
+        //[HttpPost]
+        //[Route("DeleteLivro")]
+        //public IActionResult DeleteLivro(LivroModel parameters)
+        //{
+        //    try
+        //    {
+        //        var resultMapper = _mapper.Map<LivroEntity>(parameters);
+        //        var ret = _livroService.DeleteLivro(resultMapper);
+        //        return Ok(ret);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex, "Erro ao excluir livro");
+        //        return StatusCode(500, "Erro ao excluir livro");
+        //    }
+        //}
+
+
+        //[HttpPost]
+        //[Route("DeleteAutor")]
+        //public IActionResult DeleteAutor(AutorModel parameters)
+        //{
+        //    try
+        //    {
+        //        var resultMapper = _mapper.Map<AutorEntity>(parameters);
+        //        var ret = _livroService.DeleteAutor(resultMapper);
+        //        return Ok(ret);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex, "Erro ao excluir autor");
+        //        return StatusCode(500, "Erro ao excluir autor");
+        //    }
+        //}
+
+        //[HttpPost]
+        //[Route("DeleteAssunto")]
+        //public IActionResult DeleteAssunto(AssuntoModel parameters)
+        //{
+        //    try
+        //    {
+        //        var resultMapper = _mapper.Map<AssuntoEntity>(parameters);
+        //        var ret = _livroService.DeleteAssunto(resultMapper);
+        //        return Ok(ret);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex, "Erro ao excluir assunto");
+        //        return StatusCode(500, "Erro ao excluir assunto");
+        //    }
+        //}
+
+        [HttpDelete]
         [Route("DeleteLivro")]
-        public IActionResult DeleteLivro(LivroModel parameters)
+        public IActionResult DeleteLivro([FromBody] LivroModel parameters)
         {
             try
             {
@@ -218,9 +254,9 @@ namespace BackEnd.API.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpDelete]
         [Route("DeleteAutor")]
-        public IActionResult DeleteAutor(AutorModel parameters)
+        public IActionResult DeleteAutor([FromBody] AutorModel parameters)
         {
             try
             {
@@ -235,9 +271,9 @@ namespace BackEnd.API.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpDelete]
         [Route("DeleteAssunto")]
-        public IActionResult DeleteAssunto(AssuntoModel parameters)
+        public IActionResult DeleteAssunto([FromBody] AssuntoModel parameters)
         {
             try
             {
@@ -251,5 +287,7 @@ namespace BackEnd.API.Controllers
                 return StatusCode(500, "Erro ao excluir assunto");
             }
         }
+
+
     }
 }
