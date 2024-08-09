@@ -21,29 +21,7 @@ namespace Repository
             _connectionString = _connection.ConnectionString;
         }
 
-        //public async Task<string> CreateLivro(LivroEntity livroEntity)
-        //{
-        //    try
-        //    {
-        //        using (var connection = new SqlConnection(_connectionString))
-        //        {
-        //            var query = "INSERT INTO Livro (Titulo, Editora, Edicao, AnoPublicacao) VALUES (@Titulo, @Editora, @Edicao, @AnoPublicacao)";
-        //            //Preciso retornar o ID do livro
 
-        //            var result = await connection.ExecuteAsync(query, livroEntity);
-
-        //            return result > 0 ? "Livro criado com sucesso" : "Erro ao criar livro";
-        //        }
-        //    }
-        //    catch (SqlException ex)
-        //    {
-        //        return "Erro de banco de dados: " + ex.Message;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return "Erro " + ex.Message;
-        //    }
-        //}
 
         public async Task<int> CreateLivro(LivroEntity livroEntity)
         {

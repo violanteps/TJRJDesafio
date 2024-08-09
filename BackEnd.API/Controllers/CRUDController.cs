@@ -73,7 +73,6 @@ namespace BackEnd.API.Controllers
             }
         }
         
-
         [HttpGet]
         [Route("GetLivro")]
         public async Task<IActionResult> GetLivro([FromQuery] int codl)
@@ -98,16 +97,21 @@ namespace BackEnd.API.Controllers
                 return StatusCode(500, "Erro ao buscar livro");
             }
         }
-
-
-        [HttpPost]
+                
+        [HttpGet]
         [Route("GetAutor")]
-        public IActionResult GetAutor(AutorModel parameters)
+        public async Task<IActionResult> GetAutor([FromQuery] int codAu)
         {
             try
             {
+                var parameters = new AutorModel { CodAu = codAu };
                 var resultMapper = _mapper.Map<AutorEntity>(parameters);
-                var ret = _livroService.GetAutor(resultMapper);
+
+                var ret = await _livroService.GetAutor(resultMapper);
+
+                if (ret == null)
+                   return NotFound("Autor não encontrado.");
+
                 return Ok(ret);
             }
             catch (Exception ex)
@@ -117,14 +121,20 @@ namespace BackEnd.API.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("GetAssunto")]
-        public IActionResult GetAssunto(AssuntoModel parameters)
+        public async Task<IActionResult> GetAssunto([FromQuery] int codAs)
         {
             try
             {
+                var parameters = new AssuntoModel { CodAs = codAs };
                 var resultMapper = _mapper.Map<AssuntoEntity>(parameters);
-                var ret = _livroService.GetAssunto(resultMapper);
+
+                var ret = await _livroService.GetAssunto(resultMapper);
+
+                if (ret == null)
+                    return NotFound("Assunto não encontrado.");
+                
                 return Ok(ret);
             }
             catch (Exception ex)
