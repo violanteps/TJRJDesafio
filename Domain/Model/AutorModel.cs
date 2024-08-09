@@ -6,6 +6,6 @@
 
         public string Nome { get; set; }
 
-        public List<LivroAutorEntity> LivroAutor { get; set; }
+        //public List<LivroAutorEntity> LivroAutor { get; set; }
     }
 }

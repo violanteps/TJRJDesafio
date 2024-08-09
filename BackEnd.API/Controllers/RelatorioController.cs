@@ -38,13 +38,12 @@ namespace BackEnd.API.Controllers
                     return BadRequest("Tipo de relatório inválido.");
                 }
 
-                // Verificar se o relatório está vazio ou nulo
+                
                 if (relatorio == null || !relatorio.Any())
                 {
                     return NotFound("Relatório não encontrado.");
                 }
 
-                // Retornar o relatório
                 return Ok(relatorio);
             }
             catch (Exception ex)

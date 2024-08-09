@@ -2,7 +2,6 @@
 using Domain.Dtos;
 using Domain.Entity;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -39,14 +38,13 @@ namespace Repository
                                             VALUES (@Titulo, @Editora, @Edicao, @AnoPublicacao, @StatusReg, @DataCriacao, @UltimaAtualizacao);
                                             SELECT CAST(SCOPE_IDENTITY() as int);";
 
-                            // Passando os valores dos campos adicionais que foram incluídos
                             var parameters = new
                             {
                                 livroEntity.Titulo,
                                 livroEntity.Editora,
                                 livroEntity.Edicao,
                                 livroEntity.AnoPublicacao,
-                                livroEntity.StatusReg,
+                                StatusReg = 1,
                                 DataCriacao = DateTime.Now,
                                 UltimaAtualizacao = DateTime.Now
                             };
@@ -72,7 +70,7 @@ namespace Repository
             }
             catch (Exception ex)
             {
-                
+
                 throw new Exception("Erro ao tentar iniciar a transação: " + ex.Message);
             }
         }
@@ -84,7 +82,7 @@ namespace Repository
                 using (var connection = new SqlConnection(_connectionString))
                 {
                     await connection.OpenAsync();
-                    var query = "SELECT Codl, Titulo, Editora, Edicao, AnoPublicacao, StatusReg FROM Livro WHERE Codl = @Codl";
+                    var query = "SELECT Codl, Titulo, Editora, Edicao, AnoPublicacao, StatusReg FROM Livro WHERE Codl = @Codl and StatusReg = 1";
                     var livro = await connection.QueryFirstOrDefaultAsync<LivroEntity>(query, new { Codl = livroEntity.Codl });
                     return livro;
                 }
@@ -92,12 +90,12 @@ namespace Repository
             catch (SqlException ex)
             {
                 _logger.LogError(ex, "Erro de banco de dados ao buscar o livro com Codl: {Codl}", livroEntity.Codl);
-                throw new Exception("Erro ao acessar o banco de dados.", ex); // Lança uma exceção personalizada
+                throw new Exception("Erro ao acessar o banco de dados.", ex);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro desconhecido ao buscar o livro com Codl: {Codl}", livroEntity.Codl);
-                throw new Exception("Erro ao processar a requisição.", ex); // Lança uma exceção personalizada
+                throw new Exception("Erro ao processar a requisição.", ex);
             }
         }
 
@@ -118,7 +116,7 @@ namespace Repository
                                                 Editora = @Editora, 
                                                 Edicao = @Edicao, 
                                                 AnoPublicacao = @AnoPublicacao, 
-                                                StatusReg = @Status, 
+                                                StatusReg = @StatusReg, 
                                                 UltimaAtualizacao = @UltimaAtualizacao 
                                             WHERE Codl = @Codl";
 
@@ -128,7 +126,7 @@ namespace Repository
                                 livroEntity.Editora,
                                 livroEntity.Edicao,
                                 livroEntity.AnoPublicacao,
-                                livroEntity.StatusReg,
+                                StatusReg = 1,
                                 UltimaAtualizacao = DateTime.Now,
                                 livroEntity.Codl
                             };
@@ -247,7 +245,7 @@ namespace Repository
 
                             var assuntoId = await connection.QuerySingleAsync<int>(query, parameters, transaction: transaction);
 
-                           transaction.Commit();
+                            transaction.Commit();
 
                             return assuntoId;
                         }
@@ -270,27 +268,27 @@ namespace Repository
             }
         }
 
-        public async Task<string> GetAssunto(AssuntoEntity assuntoEntity)
+        public async Task<AssuntoEntity> GetAssunto(AssuntoEntity assuntoEntity)
         {
             try
             {
                 using (var connection = new SqlConnection(_connectionString))
                 {
-                    var query = "SELECT * FROM Assunto WHERE CodAs = @CodAs";
+                    var query = "SELECT * FROM Assunto WHERE CodAs = @CodAs AND StatusReg = 1";
                     var assunto = await connection.QueryFirstOrDefaultAsync<AssuntoEntity>(query, new { CodAs = assuntoEntity.CodAs });
-                    return assunto != null ? JsonConvert.SerializeObject(assunto) : "Assunto não encontrado";
+                    return assunto;
                 }
             }
             catch (SqlException ex)
             {
-                return "Erro de banco de dados: " + ex.Message;
+                throw new Exception("Erro de banco de dados: " + ex.Message, ex);
             }
             catch (Exception ex)
             {
-                return "Erro " + ex.Message;
+                throw new Exception("Erro ao buscar o assunto: " + ex.Message, ex);
             }
-
         }
+
 
         public async Task<string> UpdateAssunto(AssuntoEntity assuntoEntity)
         {
@@ -422,13 +420,13 @@ namespace Repository
                             var parameters = new
                             {
                                 autorEntity.Nome,
-                                StatusReg = 1, 
+                                StatusReg = 1,
                                 DataCriacao = DateTime.Now,
                                 UltimaAtualizacao = DateTime.Now
                             };
 
                             var autorId = await connection.QuerySingleAsync<int>(query, parameters, transaction: transaction);
-                            
+
                             transaction.Commit();
 
                             return autorId;
@@ -447,33 +445,33 @@ namespace Repository
                 }
             }
             catch (Exception ex)
-            {   
+            {
                 throw new Exception("Erro ao tentar iniciar a transação: " + ex.Message);
             }
         }
 
-        public async Task<string> GetAutor(AutorEntity autorEntity)
+        public async Task<AutorEntity> GetAutor(AutorEntity autorEntity)
         {
             try
             {
                 using (var connection = new SqlConnection(_connectionString))
                 {
-                    var query = "SELECT * FROM Autor WHERE CodAu = @CodAu";
+                    var query = "SELECT * FROM Autor WHERE CodAu = @CodAu AND StatusReg = 1";
                     var autor = await connection.QueryFirstOrDefaultAsync<AutorEntity>(query, new { CodAu = autorEntity.CodAu });
-                    return autor != null ? JsonConvert.SerializeObject(autor) : "Autor não encontrado";
+                    return autor;
                 }
             }
             catch (SqlException ex)
             {
-                return "Erro de banco de dados: " + ex.Message;
+                throw new Exception("Erro de banco de dados: " + ex.Message, ex);
             }
             catch (Exception ex)
             {
-                return "Erro " + ex.Message;
+                throw new Exception("Erro ao buscar o autor: " + ex.Message, ex);
             }
-
         }
-        
+
+
         public async Task<string> UpdateAutor(AutorEntity autorEntity)
         {
             try
@@ -525,7 +523,7 @@ namespace Repository
                 }
             }
             catch (Exception ex)
-            {  
+            {
                 return "Erro ao tentar iniciar a transação: " + ex.Message;
             }
         }
@@ -556,7 +554,6 @@ namespace Repository
 
                             var result = await connection.ExecuteAsync(query, parameters, transaction: transaction);
 
-                            // Commit da transação se a exclusão lógica foi bem-sucedida
                             if (result > 0)
                             {
                                 transaction.Commit();
@@ -570,13 +567,13 @@ namespace Repository
                         }
                         catch (SqlException ex)
                         {
-                            
+
                             transaction.Rollback();
                             throw new Exception("Erro de banco de dados: " + ex.Message);
                         }
                         catch (Exception ex)
                         {
-                            
+
                             transaction.Rollback();
                             throw new Exception("Erro: " + ex.Message);
                         }
@@ -585,7 +582,7 @@ namespace Repository
             }
             catch (Exception ex)
             {
-                
+
                 return "Erro ao tentar iniciar a transação: " + ex.Message;
             }
         }
@@ -635,32 +632,32 @@ namespace Repository
             }
             catch (Exception ex)
             {
-                
+
                 throw new Exception("Erro ao tentar iniciar a transação: " + ex.Message);
             }
         }
 
-        public async Task<string> GetTipoVenda(TipoVendaEntity tipoVendaEntity)
+        public async Task<TipoVendaEntity> GetTipoVenda(TipoVendaEntity tipoVendaEntity)
         {
             try
             {
                 using (var connection = new SqlConnection(_connectionString))
                 {
-                    var query = "SELECT * FROM Tipo_Venda WHERE CodAu = @CodAu";
-                    var autor = await connection.QueryFirstOrDefaultAsync<AutorEntity>(query, new { Codv = tipoVendaEntity.Codv });
-                    return autor != null ? JsonConvert.SerializeObject(autor) : "Autor não encontrado";
+                    var query = "SELECT * FROM Tipo_Venda WHERE Codv = @Codv";
+                    var tipoVenda = await connection.QueryFirstOrDefaultAsync<TipoVendaEntity>(query, new { Codv = tipoVendaEntity.Codv });
+                    return tipoVenda;
                 }
             }
             catch (SqlException ex)
             {
-                return "Erro de banco de dados: " + ex.Message;
+                throw new Exception("Erro de banco de dados: " + ex.Message, ex);
             }
             catch (Exception ex)
             {
-                return "Erro " + ex.Message;
+                throw new Exception("Erro ao buscar o tipo de venda: " + ex.Message, ex);
             }
-
         }
+
 
         public async Task<string> UpdateTipoVenda(TipoVendaEntity tipoVendaEntity)
         {
@@ -796,27 +793,27 @@ namespace Repository
                                 livroValorEntity.Livro_Codl,
                                 livroValorEntity.Venda_Codv,
                                 livroValorEntity.Valor_venda,
-                                StatusReg = 1, // Status ativo
+                                StatusReg = 1,
                                 DataCriacao = DateTime.Now,
                                 UltimaAtualizacao = DateTime.Now
                             };
 
                             var livroValorId = await connection.QuerySingleAsync<int>(query, parameters, transaction: transaction);
 
-                           
+
                             transaction.Commit();
 
                             return livroValorId;
                         }
                         catch (SqlException ex)
                         {
-                            
+
                             transaction.Rollback();
                             throw new Exception("Erro de banco de dados: " + ex.Message);
                         }
                         catch (Exception ex)
                         {
-                            
+
                             transaction.Rollback();
                             throw new Exception("Erro: " + ex.Message);
                         }
@@ -825,7 +822,7 @@ namespace Repository
             }
             catch (Exception ex)
             {
-                
+
                 throw new Exception("Erro ao tentar iniciar a transação: " + ex.Message);
             }
         }
@@ -883,8 +880,7 @@ namespace Repository
 
                             var result = await connection.ExecuteAsync(query, parameters, transaction: transaction);
 
-                            // Commit da transação se a atualização foi bem-sucedida
-                            if (result > 0)
+                           if (result > 0)
                             {
                                 transaction.Commit();
                                 return "Livro_Valor atualizado com sucesso";
@@ -897,13 +893,13 @@ namespace Repository
                         }
                         catch (SqlException ex)
                         {
-                            
+
                             transaction.Rollback();
                             throw new Exception("Erro de banco de dados: " + ex.Message);
                         }
                         catch (Exception ex)
                         {
-                            
+
                             transaction.Rollback();
                             throw new Exception("Erro: " + ex.Message);
                         }
@@ -912,7 +908,7 @@ namespace Repository
             }
             catch (Exception ex)
             {
-                
+
                 return "Erro ao tentar iniciar a transação: " + ex.Message;
             }
         }
@@ -943,7 +939,6 @@ namespace Repository
 
                             var result = await connection.ExecuteAsync(query, parameters, transaction: transaction);
 
-                            // Commit da transação se a exclusão lógica foi bem-sucedida
                             if (result > 0)
                             {
                                 transaction.Commit();
@@ -957,13 +952,13 @@ namespace Repository
                         }
                         catch (SqlException ex)
                         {
-                            
+
                             transaction.Rollback();
                             throw new Exception("Erro de banco de dados: " + ex.Message);
                         }
                         catch (Exception ex)
                         {
-                            
+
                             transaction.Rollback();
                             throw new Exception("Erro: " + ex.Message);
                         }
@@ -972,7 +967,7 @@ namespace Repository
             }
             catch (Exception ex)
             {
-                
+
                 return "Erro ao tentar iniciar a transação: " + ex.Message;
             }
         }
@@ -996,14 +991,14 @@ namespace Repository
                             {
                                 livroAutorEntity.Livro_Codl,
                                 livroAutorEntity.Autor_CodAu,
-                                StatusReg = 1, 
+                                StatusReg = 1,
                                 DataCriacao = DateTime.Now,
                                 UltimaAtualizacao = DateTime.Now
                             };
 
                             var livroAutorId = await connection.QueryFirstOrDefaultAsync<int>(query, parameters, transaction: transaction);
 
-                           
+
                             transaction.Commit();
 
                             return livroAutorId;
@@ -1026,7 +1021,7 @@ namespace Repository
                 throw new Exception("Erro ao tentar iniciar a transação: " + ex.Message);
             }
         }
-        
+
         public async Task<IEnumerable<LivroAutorEntity>> GetLivroAutor(int livroCodl)
         {
             try
@@ -1037,7 +1032,7 @@ namespace Repository
                     var query = @"  SELECT Livro_Codl, Autor_CodAu, StatusReg
                                       FROM Livro_Autor
                                      WHERE Livro_Codl = @LivroCodl
-                                       AND StatusReg = 1"; 
+                                       AND StatusReg = 1";
 
                     var livroAutores = await connection.QueryAsync<LivroAutorEntity>(query, new { LivroCodl = livroCodl });
                     return livroAutores;
@@ -1096,13 +1091,13 @@ namespace Repository
                         }
                         catch (SqlException ex)
                         {
-                            
+
                             transaction.Rollback();
                             throw new Exception("Erro de banco de dados: " + ex.Message);
                         }
                         catch (Exception ex)
                         {
-                            
+
                             transaction.Rollback();
                             throw new Exception("Erro: " + ex.Message);
                         }
@@ -1259,9 +1254,7 @@ namespace Repository
             {
                 using (var connection = new SqlConnection(_connectionString))
                 {
-                    //await connection.OpenAsync();
                     var query = "SELECT 1 as tipoRel, Autor, Livro, Assunto FROM vw_LivrosPorAutorComAssunto;";
-
 
                     var result = await connection.QueryAsync<RelLivrosPorAutorComAssuntoDTO>(query);
                     return result.ToList();
@@ -1285,7 +1278,6 @@ namespace Repository
             {
                 using (var connection = new SqlConnection(_connectionString))
                 {
-                    //await connection.OpenAsync();
                     var query = "select 2 as tipoRel, Autor, Livro, Assunto, Valor, TipoVenda from vw_LivrosPorAutorComValorETipoVenda";
 
 

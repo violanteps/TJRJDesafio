@@ -1,7 +1,6 @@
 ﻿using Domain.Dtos;
 using Domain.Entity;
 using Repository;
-using System.Xml;
 
 namespace Service
 {
@@ -24,18 +23,18 @@ namespace Service
 
                 if (livroEntity.LivroAssuntoEntity == null || livroEntity.LivroAssuntoEntity.Assunto_CodAs == 0)
                     return "Erro ao criar livro. O assunto do livro deve ser informado.";
-                
+
                 var livroId = await _livroRepository.CreateLivro(livroEntity);
-                
+
                 var livroAssuntoEntity = new LivroAssuntoEntity
                 {
                     Livro_Codl = livroId,
                     Assunto_CodAs = livroEntity.LivroAssuntoEntity.Assunto_CodAs,
                     StatusReg = 1
                 };
-                
+
                 _ = await _livroRepository.CreateLivroAssunto(livroAssuntoEntity);
-                
+
                 foreach (var autor in livroEntity.LivroAutores)
                 {
                     var livroAutorEntity = new LivroAutorEntity
@@ -87,8 +86,7 @@ namespace Service
             }
             catch (Exception ex)
             {
-                //_logger.LogError(ex, "Erro ao obter livro com Codl: {Codl}", livroEntity.Codl);
-                return null;
+                throw new InvalidOperationException($"Erro ao obter livro com Codl: {livroEntity.Codl}");
             }
         }
 
@@ -97,9 +95,9 @@ namespace Service
         {
             try
             {
-                //Atualizar tb a Livro_Autor
-                //Atualizar a livro assunto
-                //Atualizar a livro valor
+                //Atualizar tb a Livro_Autor??
+                //Atualizar a livro assunto???
+                //Atualizar a livro valor???
                 var result = _livroRepository.UpdateLivro(livroEntity);
                 return await result;
             }
@@ -118,13 +116,13 @@ namespace Service
                 var livroAssunto = await _livroRepository.GetLivroAssunto(livroEntity.Codl);
                 var livroAutores = await _livroRepository.GetLivroAutor(livroEntity.Codl);
 
-                if ( livroAssunto != null )
-                _ = await _livroRepository.DeleteLivroAssunto(livroAssunto.Livro_Codl, livroAssunto.Assunto_CodAs);
-                
+                if (livroAssunto != null)
+                    _ = await _livroRepository.DeleteLivroAssunto(livroAssunto.Livro_Codl, livroAssunto.Assunto_CodAs);
+
                 if (livroAssunto != null)
                     foreach (var livroAutor in livroAutores)
                     {
-                    _ = await _livroRepository.DeleteLivroAutor(livroAutor.Livro_Codl, livroAutor.Autor_CodAu);
+                        _ = await _livroRepository.DeleteLivroAutor(livroAutor.Livro_Codl, livroAutor.Autor_CodAu);
                     }
 
                 _ = await _livroRepository.DeleteLivro(livroEntity);
@@ -150,16 +148,16 @@ namespace Service
             }
         }
 
-        public async Task<string> GetAssunto(AssuntoEntity assuntoEntity)
+        public async Task<AssuntoEntity> GetAssunto(AssuntoEntity assuntoEntity)
         {
             try
             {
-                var result = _livroRepository.GetAssunto(assuntoEntity);
-                return await result;
+                var result = await _livroRepository.GetAssunto(assuntoEntity);
+                return result;
             }
             catch (Exception ex)
             {
-                return $"Erro ao obter assunto: {ex.Message}";
+                throw new InvalidOperationException($"Erro ao obter assunto: {ex.Message}", ex);
             }
         }
 
@@ -202,7 +200,7 @@ namespace Service
             try
             {
                 //Verificar se ja existe o nome;
-                
+
                 var result = await _livroRepository.CreateAutor(autorEntity);
                 return $"Autor {autorEntity.Nome} criado com sucesso";
             }
@@ -212,17 +210,16 @@ namespace Service
             }
         }
 
-        public async Task<string> GetAutor(AutorEntity autorEntity)
+        public async Task<AutorEntity> GetAutor(AutorEntity autorEntity)
         {
             try
             {
-                var result = _livroRepository.GetAutor(autorEntity);
-                return await result;
+                var result = await _livroRepository.GetAutor(autorEntity);
+                return result;
             }
             catch (Exception ex)
             {
-
-                return $"Erro ao obter autor: {ex.Message}";
+                throw new InvalidOperationException($"Erro ao obter autor: {ex.Message}");
             }
         }
 
@@ -268,22 +265,21 @@ namespace Service
             catch (Exception ex)
             {
 
-                return $"Erro ao criar autor: {ex.Message}";
+                return $"Erro ao criar TipoVenda: {ex.Message}";
             }
         }
 
-        public async Task<string> GetTipoVenda(TipoVendaEntity tipoVendaEntity)
+        public async Task<TipoVendaEntity> GetTipoVenda(TipoVendaEntity tipoVendaEntity)
         {
             try
             {
 
-                var result = _livroRepository.GetTipoVenda(tipoVendaEntity);
-                return await result;
+                var result = await _livroRepository.GetTipoVenda(tipoVendaEntity);
+                return result;
             }
             catch (Exception ex)
             {
-
-                return $"Erro ao obter autor: {ex.Message}";
+                throw new InvalidOperationException($"Erro ao obter TipoVenda: {ex.Message}");
             }
         }
 
@@ -297,8 +293,7 @@ namespace Service
             }
             catch (Exception ex)
             {
-
-                return $"Erro ao atualizar autor: {ex.Message}";
+                return $"Erro ao atualizar TipoVenda: {ex.Message}";
             }
         }
 
@@ -312,8 +307,7 @@ namespace Service
             }
             catch (Exception ex)
             {
-
-                return $"Erro ao deletar autor: {ex.Message}";
+                return $"Erro ao deletar TipoVenda: {ex.Message}";
             }
         }
 
@@ -324,11 +318,9 @@ namespace Service
             {
                 var result = await _livroRepository.GerarRelatorioPorAutorComAssunto(tipoRelatorio);
                 return result;
-
             }
             catch (Exception ex)
             {
-
                 throw new InvalidOperationException($"Erro ao gerar o relatório.", ex);
             }
         }

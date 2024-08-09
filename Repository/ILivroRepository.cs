@@ -11,17 +11,17 @@ namespace Repository
         Task<string> DeleteLivro(LivroEntity param);
 
         Task<int> CreateAssunto(AssuntoEntity param);
-        Task<string> GetAssunto(AssuntoEntity param);
+        Task<AssuntoEntity> GetAssunto(AssuntoEntity assuntoEntity);
         Task<string> UpdateAssunto(AssuntoEntity param);
         Task<string> DeleteAssunto(AssuntoEntity param);
 
         Task<int> CreateAutor(AutorEntity param);
-        Task<string> GetAutor(AutorEntity param);
+        Task<AutorEntity> GetAutor(AutorEntity param);
         Task<string> UpdateAutor(AutorEntity param);
         Task<string> DeleteAutor(AutorEntity param);
 
         Task<int> CreateTipoVenda(TipoVendaEntity tipoVendaEntity);
-        Task<string> GetTipoVenda(TipoVendaEntity tipoVendaEntity);
+        Task<TipoVendaEntity> GetTipoVenda(TipoVendaEntity tipoVendaEntity);
         Task<string> UpdateTipoVenda(TipoVendaEntity tipoVendaEntity);
         Task<string> DeleteTipoVenda(TipoVendaEntity tipoVendaEntity);
 

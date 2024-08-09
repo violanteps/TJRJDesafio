@@ -2,8 +2,6 @@
 using Domain.Entity;
 using Microsoft.AspNetCore.Mvc;
 using Service;
-using Domain;
-using System;
 
 namespace BackEnd.API.Controllers
 {
@@ -24,13 +22,13 @@ namespace BackEnd.API.Controllers
 
         [HttpPost]
         [Route("CreateLivro")]
-        public IActionResult CreateLivro(LivroModel parameters)
+        public async Task<IActionResult> CreateLivro(LivroModel parameters)
         {
             try
             {
                 var resultMapper = _mapper.Map<LivroEntity>(parameters);
-                var ret = _livroService.CreateLivro(resultMapper);
-                return Ok(ret.Result);
+                var ret = await _livroService.CreateLivro(resultMapper);
+                return Ok(ret);
             }
             catch (Exception ex)
             {
@@ -73,7 +71,7 @@ namespace BackEnd.API.Controllers
                 return StatusCode(500, "Erro ao criar assunto");
             }
         }
-        
+
         [HttpGet]
         [Route("GetLivro")]
         public async Task<IActionResult> GetLivro([FromQuery] int codl)
@@ -98,7 +96,7 @@ namespace BackEnd.API.Controllers
                 return StatusCode(500, "Erro ao buscar livro");
             }
         }
-                
+
         [HttpGet]
         [Route("GetAutor")]
         public async Task<IActionResult> GetAutor([FromQuery] int codAu)
@@ -111,7 +109,7 @@ namespace BackEnd.API.Controllers
                 var ret = await _livroService.GetAutor(resultMapper);
 
                 if (ret == null)
-                   return NotFound("Autor não encontrado.");
+                    return NotFound("Autor não encontrado.");
 
                 return Ok(ret);
             }
@@ -135,7 +133,7 @@ namespace BackEnd.API.Controllers
 
                 if (ret == null)
                     return NotFound("Assunto não encontrado.");
-                
+
                 return Ok(ret);
             }
             catch (Exception ex)
@@ -147,12 +145,12 @@ namespace BackEnd.API.Controllers
 
         [HttpPost]
         [Route("UpdateLivro")]
-        public IActionResult UpdateLivro(LivroModel parameters)
+        public async Task<IActionResult> UpdateLivro(LivroModel parameters)
         {
             try
             {
                 var resultMapper = _mapper.Map<LivroEntity>(parameters);
-                var ret = _livroService.UpdateLivro(resultMapper);
+                var ret = await _livroService.UpdateLivro(resultMapper);
                 return Ok(ret);
             }
             catch (Exception ex)
@@ -164,12 +162,12 @@ namespace BackEnd.API.Controllers
 
         [HttpPost]
         [Route("UpdateAutor")]
-        public IActionResult UpdateAutor(AutorModel parameters)
+        public async Task<IActionResult> UpdateAutor(AutorModel parameters)
         {
             try
             {
                 var resultMapper = _mapper.Map<AutorEntity>(parameters);
-                var ret = _livroService.UpdateAutor(resultMapper);
+                var ret = await _livroService.UpdateAutor(resultMapper);
                 return Ok(ret);
             }
             catch (Exception ex)
@@ -181,12 +179,12 @@ namespace BackEnd.API.Controllers
 
         [HttpPost]
         [Route("UpdateAssunto")]
-        public IActionResult UpdateAssunto(AssuntoModel parameters)
+        public async Task<IActionResult> UpdateAssunto(AssuntoModel parameters)
         {
             try
             {
                 var resultMapper = _mapper.Map<AssuntoEntity>(parameters);
-                var ret = _livroService.UpdateAssunto(resultMapper);
+                var ret = await _livroService.UpdateAssunto(resultMapper);
                 return Ok(ret);
             }
             catch (Exception ex)
@@ -195,7 +193,7 @@ namespace BackEnd.API.Controllers
                 return StatusCode(500, "Erro ao atualizar assunto");
             }
         }
-                
+
         [HttpDelete]
         [Route("DeleteLivro")]
         public IActionResult DeleteLivro([FromQuery] int codl)
@@ -231,7 +229,7 @@ namespace BackEnd.API.Controllers
                 return StatusCode(500, "Erro ao excluir autor");
             }
         }
-        
+
 
         [HttpDelete]
         [Route("DeleteAssunto")]
@@ -250,7 +248,7 @@ namespace BackEnd.API.Controllers
                 return StatusCode(500, "Erro ao excluir assunto");
             }
         }
-                
+
 
     }
 }
