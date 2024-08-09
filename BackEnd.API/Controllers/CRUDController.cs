@@ -196,13 +196,13 @@ namespace BackEnd.API.Controllers
 
         [HttpDelete]
         [Route("DeleteLivro")]
-        public IActionResult DeleteLivro([FromQuery] int codl)
+        public async Task<IActionResult> DeleteLivro([FromQuery] int codl)
         {
             try
             {
                 var parameters = new LivroModel { Codl = codl };
                 var resultMapper = _mapper.Map<LivroEntity>(parameters);
-                var ret = _livroService.DeleteLivro(resultMapper);
+                var ret = await _livroService.DeleteLivro(resultMapper);
                 return Ok(ret);
             }
             catch (Exception ex)
@@ -214,13 +214,13 @@ namespace BackEnd.API.Controllers
 
         [HttpDelete]
         [Route("DeleteAutor")]
-        public IActionResult DeleteAutor([FromQuery] int codAu)
+        public async Task<IActionResult> DeleteAutor([FromQuery] int codAu)
         {
             try
             {
                 var parameters = new AutorModel { CodAu = codAu };
                 var resultMapper = _mapper.Map<AutorEntity>(parameters);
-                var ret = _livroService.DeleteAutor(resultMapper);
+                var ret = await _livroService.DeleteAutor(resultMapper);
                 return Ok(ret);
             }
             catch (Exception ex)
@@ -233,13 +233,13 @@ namespace BackEnd.API.Controllers
 
         [HttpDelete]
         [Route("DeleteAssunto")]
-        public IActionResult DeleteAssunto([FromQuery] int codAs)
+        public async Task<IActionResult> DeleteAssunto([FromQuery] int codAs)
         {
             try
             {
                 var parameters = new AssuntoModel { CodAs = codAs };
                 var resultMapper = _mapper.Map<AssuntoEntity>(parameters);
-                var ret = _livroService.DeleteAssunto(resultMapper);
+                var ret = await _livroService.DeleteAssunto(resultMapper);
                 return Ok(ret);
             }
             catch (Exception ex)

@@ -13,16 +13,16 @@ namespace Service
             _livroRepository = livroRepository;
         }
 
-        public async Task<string> CreateLivro(LivroEntity livroEntity)
+        public async Task<bool> CreateLivro(LivroEntity livroEntity)
         {
             try
             {
                 //TODO - ESTE FLUXO ESTA FRÁGIL SEM QUE EU COMMITE A TRANSAÇÃO INTEIRA DE UMA VEZ
                 if (livroEntity.LivroAutores == null || livroEntity.LivroAutores.Count == 0)
-                    return "Erro ao criar livro. Deve existir ao menos 1 autor.";
+                    return false;
 
                 if (livroEntity.LivroAssuntoEntity == null || livroEntity.LivroAssuntoEntity.Assunto_CodAs == 0)
-                    return "Erro ao criar livro. O assunto do livro deve ser informado.";
+                    return false;
 
                 var livroId = await _livroRepository.CreateLivro(livroEntity);
 
@@ -46,11 +46,11 @@ namespace Service
                     _ = await _livroRepository.CreateLivroAutor(livroAutorEntity);
                 }
 
-                return "Livro criado com sucesso.";
+                return true;
             }
             catch (Exception ex)
             {
-                return $"Erro ao criar livro: {ex.Message}";
+                return false;
             }
         }
 
@@ -91,24 +91,23 @@ namespace Service
         }
 
 
-        public async Task<string> UpdateLivro(LivroEntity livroEntity)
+        public async Task<bool> UpdateLivro(LivroEntity livroEntity)
         {
             try
             {
                 //Atualizar tb a Livro_Autor??
                 //Atualizar a livro assunto???
                 //Atualizar a livro valor???
-                var result = _livroRepository.UpdateLivro(livroEntity);
-                return await result;
+                var result = await _livroRepository.UpdateLivro(livroEntity);
+                return  true;
             }
             catch (Exception ex)
             {
-
-                return $"Erro ao atualizar livro: {ex.Message}";
+                return false;
             }
         }
 
-        public async Task<string> DeleteLivro(LivroEntity livroEntity)
+        public async Task<bool> DeleteLivro(LivroEntity livroEntity)
         {
             try
             {
@@ -127,24 +126,24 @@ namespace Service
 
                 _ = await _livroRepository.DeleteLivro(livroEntity);
 
-                return $"Livro excluído com sucesso.";
+                return true;
             }
             catch (Exception ex)
             {
-                return $"Erro ao deletar livro: {ex.Message}";
+                return false;
             }
         }
 
-        public async Task<string> CreateAssunto(AssuntoEntity assuntoEntity)
+        public async Task<bool> CreateAssunto(AssuntoEntity assuntoEntity)
         {
             try
             {
                 var result = await _livroRepository.CreateAssunto(assuntoEntity);
-                return $"Assunto {assuntoEntity.Descricao} criado com sucesso."; ;
+                return true;
             }
             catch (Exception ex)
             {
-                return $"Erro ao criar assunto: {ex.Message}";
+                return false;
             }
         }
 
@@ -161,52 +160,47 @@ namespace Service
             }
         }
 
-        public async Task<string> UpdateAssunto(AssuntoEntity assuntoEntity)
+        public async Task<bool> UpdateAssunto(AssuntoEntity assuntoEntity)
         {
             try
             {
-
                 //Atualizar a livro assunto
 
-                var result = _livroRepository.UpdateAssunto(assuntoEntity);
-                return await result;
+                var result = await _livroRepository.UpdateAssunto(assuntoEntity);
+                return true;
             }
             catch (Exception ex)
             {
-
-                return $"Erro ao atualizar assunto: {ex.Message}";
+                return false;
             }
         }
 
-        public async Task<string> DeleteAssunto(AssuntoEntity assuntoEntity)
+        public async Task<bool> DeleteAssunto(AssuntoEntity assuntoEntity)
         {
             try
             {
-
                 //Atualizar a livro assunto
 
-                var result = _livroRepository.DeleteAssunto(assuntoEntity);
-                return await result;
+                var result = await _livroRepository.DeleteAssunto(assuntoEntity);
+                return true;
             }
             catch (Exception ex)
             {
-
-                return $"Erro ao deletar assunto: {ex.Message}";
+                return false;
             }
         }
 
-        public async Task<string> CreateAutor(AutorEntity autorEntity)
+        public async Task<bool> CreateAutor(AutorEntity autorEntity)
         {
             try
             {
                 //Verificar se ja existe o nome;
-
                 var result = await _livroRepository.CreateAutor(autorEntity);
-                return $"Autor {autorEntity.Nome} criado com sucesso";
+                return true;
             }
             catch (Exception ex)
             {
-                return $"Erro ao criar autor {autorEntity.Nome}. {ex.Message}";
+                return false;
             }
         }
 
@@ -223,49 +217,46 @@ namespace Service
             }
         }
 
-        public async Task<string> UpdateAutor(AutorEntity autorEntity)
+        public async Task<bool> UpdateAutor(AutorEntity autorEntity)
         {
             try
             {
                 //Atualizar tb a Livro_Autor
 
-                var result = _livroRepository.UpdateAutor(autorEntity);
-                return await result;
+                var result = await _livroRepository.UpdateAutor(autorEntity);
+                return true;
             }
             catch (Exception ex)
             {
-
-                return $"Erro ao atualizar autor: {ex.Message}";
+                return false;
             }
         }
 
-        public async Task<string> DeleteAutor(AutorEntity autorEntity)
+        public async Task<bool> DeleteAutor(AutorEntity autorEntity)
         {
             try
             {
                 //Atualizar tb a Livro_Autor
 
-                var result = _livroRepository.DeleteAutor(autorEntity);
-                return await result;
+                var result = await _livroRepository.DeleteAutor(autorEntity);
+                return true;
             }
             catch (Exception ex)
             {
-
-                return $"Erro ao deletar autor: {ex.Message}";
+                return false;
             }
         }
 
-        public async Task<string> CreateTipoVenda(TipoVendaEntity tipoVendaEntity)
+        public async Task<bool> CreateTipoVenda(TipoVendaEntity tipoVendaEntity)
         {
             try
             {
                 var result = await _livroRepository.CreateTipoVenda(tipoVendaEntity);
-                return "";
+                return true;
             }
             catch (Exception ex)
             {
-
-                return $"Erro ao criar TipoVenda: {ex.Message}";
+                return false;
             }
         }
 
@@ -273,7 +264,6 @@ namespace Service
         {
             try
             {
-
                 var result = await _livroRepository.GetTipoVenda(tipoVendaEntity);
                 return result;
             }
@@ -283,31 +273,31 @@ namespace Service
             }
         }
 
-        public async Task<string> UpdateTipoVenda(TipoVendaEntity tipoVendaEntity)
+        public async Task<bool> UpdateTipoVenda(TipoVendaEntity tipoVendaEntity)
         {
             try
             {
                 //Atualizar a livro_valor
-                var result = _livroRepository.UpdateTipoVenda(tipoVendaEntity);
-                return await result;
+                var result = await _livroRepository.UpdateTipoVenda(tipoVendaEntity);
+                return true;
             }
             catch (Exception ex)
             {
-                return $"Erro ao atualizar TipoVenda: {ex.Message}";
+                return false;
             }
         }
 
-        public async Task<string> DeleteTipoVenda(TipoVendaEntity tipoVendaEntity)
+        public async Task<bool> DeleteTipoVenda(TipoVendaEntity tipoVendaEntity)
         {
             try
             {
                 //Atualizo Livro valor
-                var result = _livroRepository.DeleteTipoVenda(tipoVendaEntity);
-                return await result;
+                var result = await _livroRepository.DeleteTipoVenda(tipoVendaEntity);
+                return true;
             }
             catch (Exception ex)
             {
-                return $"Erro ao deletar TipoVenda: {ex.Message}";
+                return false;
             }
         }
 
@@ -325,18 +315,15 @@ namespace Service
             }
         }
 
-
         public async Task<List<RelLivrosPorAutorComValorETipoVendaDTO>> GerarRelatorioPorAutorComValor(int tipoRelatorio)
         {
             try
             {
                 var result = await _livroRepository.GerarRelatorioPorAutorComValor(tipoRelatorio);
                 return result;
-
             }
             catch (Exception ex)
             {
-
                 throw new InvalidOperationException($"Erro ao gerar o relatório.", ex);
             }
         }
