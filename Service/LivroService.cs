@@ -18,7 +18,7 @@ namespace Service
         {
             try
             {
-                
+                //TODO - ESTE FLUXO ESTA FRÁGIL SEM QUE EU COMMITE A TRANSAÇÃO INTEIRA DE UMA VEZ
                 if (livroEntity.LivroAutores == null || livroEntity.LivroAutores.Count == 0)
                     return "Erro ao criar livro. Deve existir ao menos 1 autor.";
 
@@ -114,13 +114,25 @@ namespace Service
         {
             try
             {
-                //É feita exclusão lógica
-                var result = _livroRepository.DeleteLivro(livroEntity);
-                return await result;
+                //TODO - ESTE FLUXO ESTA FRÁGIL SEM QUE EU COMMITE A TRANSAÇÃO INTEIRA DE UMA VEZ
+                var livroAssunto = await _livroRepository.GetLivroAssunto(livroEntity.Codl);
+                var livroAutores = await _livroRepository.GetLivroAutor(livroEntity.Codl);
+
+                if ( livroAssunto != null )
+                _ = await _livroRepository.DeleteLivroAssunto(livroAssunto.Livro_Codl, livroAssunto.Assunto_CodAs);
+                
+                if (livroAssunto != null)
+                    foreach (var livroAutor in livroAutores)
+                    {
+                    _ = await _livroRepository.DeleteLivroAutor(livroAutor.Livro_Codl, livroAutor.Autor_CodAu);
+                    }
+
+                _ = await _livroRepository.DeleteLivro(livroEntity);
+
+                return $"Livro excluído com sucesso.";
             }
             catch (Exception ex)
             {
-
                 return $"Erro ao deletar livro: {ex.Message}";
             }
         }
@@ -189,8 +201,10 @@ namespace Service
         {
             try
             {
+                //Verificar se ja existe o nome;
+                
                 var result = await _livroRepository.CreateAutor(autorEntity);
-                return "";
+                return $"Autor {autorEntity.Nome} criado com sucesso";
             }
             catch (Exception ex)
             {

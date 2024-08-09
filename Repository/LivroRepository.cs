@@ -1210,7 +1210,8 @@ namespace Repository
                                 UPDATE Livro_Assunto 
                                 SET StatusReg = 0, 
                                     UltimaAtualizacao = @UltimaAtualizacao 
-                                WHERE Livro_Codl = @Livro_Codl AND Assunto_CodAs = @Assunto_CodAs";
+                                WHERE Livro_Codl = @Livro_Codl 
+                                  AND Assunto_CodAs = @Assunto_CodAs";
 
                             var parameters = new
                             {

@@ -12,7 +12,7 @@
 
         public string AnoPublicacao { get; set; }
 
-        public int Status { get; set; }
+        public int StatusReg { get; set; }
 
         public LivroAssuntoEntity LivroAssuntoEntity { get; set; }
 

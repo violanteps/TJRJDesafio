@@ -41,12 +41,12 @@ namespace BackEnd.API.Controllers
 
         [HttpPost]
         [Route("CreateAutor")]
-        public IActionResult CreateAutor(AutorModel parameters)
+        public async Task<IActionResult> CreateAutor(AutorModel parameters)
         {
             try
             {
                 var resultMapper = _mapper.Map<AutorEntity>(parameters);
-                var ret = _livroService.CreateAutor(resultMapper);
+                var ret = await _livroService.CreateAutor(resultMapper);
                 return Ok(ret);
             }
             catch (Exception ex)
@@ -55,6 +55,7 @@ namespace BackEnd.API.Controllers
                 return StatusCode(500, "Erro ao criar autor");
             }
         }
+
 
         [HttpPost]
         [Route("CreateAssunto")]
@@ -194,65 +195,14 @@ namespace BackEnd.API.Controllers
                 return StatusCode(500, "Erro ao atualizar assunto");
             }
         }
-
-        //[HttpPost]
-        //[Route("DeleteLivro")]
-        //public IActionResult DeleteLivro(LivroModel parameters)
-        //{
-        //    try
-        //    {
-        //        var resultMapper = _mapper.Map<LivroEntity>(parameters);
-        //        var ret = _livroService.DeleteLivro(resultMapper);
-        //        return Ok(ret);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, "Erro ao excluir livro");
-        //        return StatusCode(500, "Erro ao excluir livro");
-        //    }
-        //}
-
-
-        //[HttpPost]
-        //[Route("DeleteAutor")]
-        //public IActionResult DeleteAutor(AutorModel parameters)
-        //{
-        //    try
-        //    {
-        //        var resultMapper = _mapper.Map<AutorEntity>(parameters);
-        //        var ret = _livroService.DeleteAutor(resultMapper);
-        //        return Ok(ret);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, "Erro ao excluir autor");
-        //        return StatusCode(500, "Erro ao excluir autor");
-        //    }
-        //}
-
-        //[HttpPost]
-        //[Route("DeleteAssunto")]
-        //public IActionResult DeleteAssunto(AssuntoModel parameters)
-        //{
-        //    try
-        //    {
-        //        var resultMapper = _mapper.Map<AssuntoEntity>(parameters);
-        //        var ret = _livroService.DeleteAssunto(resultMapper);
-        //        return Ok(ret);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, "Erro ao excluir assunto");
-        //        return StatusCode(500, "Erro ao excluir assunto");
-        //    }
-        //}
-
+                
         [HttpDelete]
         [Route("DeleteLivro")]
-        public IActionResult DeleteLivro([FromBody] LivroModel parameters)
+        public IActionResult DeleteLivro([FromQuery] int codl)
         {
             try
             {
+                var parameters = new LivroModel { Codl = codl };
                 var resultMapper = _mapper.Map<LivroEntity>(parameters);
                 var ret = _livroService.DeleteLivro(resultMapper);
                 return Ok(ret);
@@ -266,10 +216,11 @@ namespace BackEnd.API.Controllers
 
         [HttpDelete]
         [Route("DeleteAutor")]
-        public IActionResult DeleteAutor([FromBody] AutorModel parameters)
+        public IActionResult DeleteAutor([FromQuery] int codAu)
         {
             try
             {
+                var parameters = new AutorModel { CodAu = codAu };
                 var resultMapper = _mapper.Map<AutorEntity>(parameters);
                 var ret = _livroService.DeleteAutor(resultMapper);
                 return Ok(ret);
@@ -280,13 +231,15 @@ namespace BackEnd.API.Controllers
                 return StatusCode(500, "Erro ao excluir autor");
             }
         }
+        
 
         [HttpDelete]
         [Route("DeleteAssunto")]
-        public IActionResult DeleteAssunto([FromBody] AssuntoModel parameters)
+        public IActionResult DeleteAssunto([FromQuery] int codAs)
         {
             try
             {
+                var parameters = new AssuntoModel { CodAs = codAs };
                 var resultMapper = _mapper.Map<AssuntoEntity>(parameters);
                 var ret = _livroService.DeleteAssunto(resultMapper);
                 return Ok(ret);
@@ -297,7 +250,7 @@ namespace BackEnd.API.Controllers
                 return StatusCode(500, "Erro ao excluir assunto");
             }
         }
-
+                
 
     }
 }
