@@ -38,6 +38,25 @@ namespace BackEnd.API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetAssuntoList")]
+        public async Task<IActionResult> GetAssuntoList()
+        {
+            try
+            {
+                var ret = await _livroService.GetAssuntoList();
+
+                if (ret == null)
+                    return NotFound("Assunto não encontrado.");
+
+                return Ok(ret);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao buscar assunto");
+                return StatusCode(500, "Erro ao buscar assunto");
+            }
+        }
 
         [HttpGet]
         [Route("GetAssunto")]

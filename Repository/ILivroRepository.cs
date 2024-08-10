@@ -7,16 +7,19 @@ namespace Repository
     {
         Task<int> CreateLivro(LivroEntity livroEntity);
         Task<LivroEntity> GetLivro(LivroEntity param);
+        Task<List<LivroEntity>> GetLivroList();
         Task<string> UpdateLivro(LivroEntity param);
         Task<string> DeleteLivro(LivroEntity param);
 
         Task<int> CreateAssunto(AssuntoEntity param);
         Task<AssuntoEntity> GetAssunto(AssuntoEntity assuntoEntity);
+        Task<List<AssuntoEntity>> GetAssuntoList();
         Task<string> UpdateAssunto(AssuntoEntity param);
         Task<string> DeleteAssunto(AssuntoEntity param);
 
         Task<int> CreateAutor(AutorEntity param);
         Task<AutorEntity> GetAutor(AutorEntity param);
+        Task<List<AutorEntity>> GetAutorList();
         Task<string> UpdateAutor(AutorEntity param);
         Task<string> DeleteAutor(AutorEntity param);
 

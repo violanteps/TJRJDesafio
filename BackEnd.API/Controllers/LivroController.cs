@@ -62,6 +62,29 @@ namespace BackEnd.API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetLivroList")]
+        public async Task<IActionResult> GetLivroList()
+        {
+            try
+            {
+               
+                var ret = await _livroService.GetLivroList();
+
+                if (ret == null)
+                {
+                    return NotFound("Livro não encontrado.");
+                }
+
+                return Ok(ret);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao buscar livro");
+                return StatusCode(500, "Erro ao buscar livro");
+            }
+        }
+
         [HttpPost]
         [Route("UpdateLivro")]
         public async Task<IActionResult> UpdateLivro(LivroModel parameters)

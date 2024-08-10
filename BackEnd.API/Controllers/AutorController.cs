@@ -61,6 +61,26 @@ namespace BackEnd.API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetAutorList")]
+        public async Task<IActionResult> GetAutorList()
+        {
+            try
+            {
+                var ret = await _livroService.GetAutorList();
+
+                if (ret == null)
+                    return NotFound("Autor não encontrado.");
+
+                return Ok(ret);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao buscar autor");
+                return StatusCode(500, "Erro ao buscar autor");
+            }
+        }
+
         [HttpPost]
         [Route("UpdateAutor")]
         public async Task<IActionResult> UpdateAutor(AutorModel parameters)

@@ -91,6 +91,46 @@ namespace Service
         }
 
 
+        public async Task<List<LivroEntity>> GetLivroList()
+        {
+            try
+            {
+                var retGetLivroList = await _livroRepository.GetLivroList();
+
+                if (retGetLivroList == null || retGetLivroList.Count == 0)
+                    return new List<LivroEntity>(); 
+                
+
+                var result = new List<LivroEntity>();
+
+                foreach (var livro in retGetLivroList)
+                {
+                    var retLivroAssunto = await _livroRepository.GetLivroAssunto(livro.Codl);
+                    var retLivroAutor = await _livroRepository.GetLivroAutor(livro.Codl);
+
+                    var livroEntity = new LivroEntity
+                    {
+                        Codl = livro.Codl,
+                        Titulo = livro.Titulo,
+                        Editora = livro.Editora,
+                        Edicao = livro.Edicao,
+                        AnoPublicacao = livro.AnoPublicacao,
+                        StatusReg = livro.StatusReg,
+                        LivroAssuntoEntity = retLivroAssunto,
+                        LivroAutores = retLivroAutor.ToList()
+                    };
+
+                    result.Add(livroEntity);
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Erro ao obter lista de livros.", ex);
+            }
+        }
+
         public async Task<bool> UpdateLivro(LivroEntity livroEntity)
         {
             try
@@ -160,6 +200,19 @@ namespace Service
             }
         }
 
+        public async Task<List<AssuntoEntity>> GetAssuntoList()
+        {
+            try
+            {
+                var result = await _livroRepository.GetAssuntoList();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"Erro ao obter assunto: {ex.Message}", ex);
+            }
+        }
+
         public async Task<bool> UpdateAssunto(AssuntoEntity assuntoEntity)
         {
             try
@@ -209,6 +262,19 @@ namespace Service
             try
             {
                 var result = await _livroRepository.GetAutor(autorEntity);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"Erro ao obter autor: {ex.Message}");
+            }
+        }
+
+        public async Task<List<AutorEntity>> GetAutorList()
+        {
+            try
+            {
+                var result = await _livroRepository.GetAutorList();
                 return result;
             }
             catch (Exception ex)

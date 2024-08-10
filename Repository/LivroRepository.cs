@@ -99,6 +99,30 @@ namespace Repository
             }
         }
 
+        public async Task<List<LivroEntity>> GetLivroList()
+        {
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    await connection.OpenAsync();
+                    var query = "SELECT Codl, Titulo, Editora, Edicao, AnoPublicacao, StatusReg FROM Livro WHERE StatusReg = 1";
+                    var livro = await connection.QueryAsync<LivroEntity>(query);
+                    return livro.ToList();
+                }
+            }
+            catch (SqlException ex)
+            {
+                _logger.LogError(ex, "Erro de banco de dados ao buscar a lista de livros");
+                throw new Exception("Erro ao acessar o banco de dados.", ex);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro desconhecido ao buscar a lista de livros");
+                throw new Exception("Erro ao processar a requisição.", ex);
+            }
+        }
+
         public async Task<string> UpdateLivro(LivroEntity livroEntity)
         {
             try
@@ -289,6 +313,27 @@ namespace Repository
             }
         }
 
+        public async Task<List<AssuntoEntity>> GetAssuntoList()
+        {
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    var query = "SELECT * FROM Assunto WHERE StatusReg = 1";
+                    var assunto = await connection.QueryAsync<AssuntoEntity>(query);
+                    return assunto.ToList();
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("Erro de banco de dados: " + ex.Message, ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao buscar o assunto: " + ex.Message, ex);
+            }
+        }
+
 
         public async Task<string> UpdateAssunto(AssuntoEntity assuntoEntity)
         {
@@ -459,6 +504,27 @@ namespace Repository
                     var query = "SELECT * FROM Autor WHERE CodAu = @CodAu AND StatusReg = 1";
                     var autor = await connection.QueryFirstOrDefaultAsync<AutorEntity>(query, new { CodAu = autorEntity.CodAu });
                     return autor;
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("Erro de banco de dados: " + ex.Message, ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao buscar o autor: " + ex.Message, ex);
+            }
+        }
+
+        public async Task<List<AutorEntity>> GetAutorList()
+        {
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    var query = "SELECT * FROM Autor WHERE StatusReg = 1";
+                    var autor = await connection.QueryAsync<AutorEntity>(query);
+                    return autor.ToList();
                 }
             }
             catch (SqlException ex)
