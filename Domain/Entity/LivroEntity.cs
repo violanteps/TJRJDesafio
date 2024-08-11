@@ -14,6 +14,8 @@
 
         public int StatusReg { get; set; }
 
+        public DateTime DataCriacao { get; set; }
+        
         public LivroAssuntoEntity LivroAssuntoEntity { get; set; }
 
         public List<LivroAutorEntity> LivroAutores { get; set; }

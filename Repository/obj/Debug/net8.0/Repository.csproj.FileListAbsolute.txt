@@ -8,9 +8,9 @@ C:\GIT\TJRJDesafio\TJRJDesafio\Repository\obj\Debug\net8.0\Repository.GeneratedM
 C:\GIT\TJRJDesafio\TJRJDesafio\Repository\obj\Debug\net8.0\Repository.AssemblyInfoInputs.cache
 C:\GIT\TJRJDesafio\TJRJDesafio\Repository\obj\Debug\net8.0\Repository.AssemblyInfo.cs
 C:\GIT\TJRJDesafio\TJRJDesafio\Repository\obj\Debug\net8.0\Repository.csproj.CoreCompileInputs.cache
+C:\GIT\TJRJDesafio\TJRJDesafio\Repository\obj\Debug\net8.0\Repository.sourcelink.json
 C:\GIT\TJRJDesafio\TJRJDesafio\Repository\obj\Debug\net8.0\Repository.csproj.Up2Date
 C:\GIT\TJRJDesafio\TJRJDesafio\Repository\obj\Debug\net8.0\Repository.dll
 C:\GIT\TJRJDesafio\TJRJDesafio\Repository\obj\Debug\net8.0\refint\Repository.dll
 C:\GIT\TJRJDesafio\TJRJDesafio\Repository\obj\Debug\net8.0\Repository.pdb
 C:\GIT\TJRJDesafio\TJRJDesafio\Repository\obj\Debug\net8.0\ref\Repository.dll
-C:\GIT\TJRJDesafio\TJRJDesafio\Repository\obj\Debug\net8.0\Repository.sourcelink.json

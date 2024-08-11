@@ -2,9 +2,9 @@
 {
     public class LivroAutorEntity
     {
-        public int Livro_Codl { get; set; }
+        public int LivroCodl { get; set; }
 
-        public int Autor_CodAu { get; set; }
+        public int AutorCodAu { get; set; }
 
         public int StatusReg { get; set; }
     }

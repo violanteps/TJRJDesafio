@@ -106,7 +106,7 @@ namespace Repository
                 using (var connection = new SqlConnection(_connectionString))
                 {
                     await connection.OpenAsync();
-                    var query = "SELECT Codl, Titulo, Editora, Edicao, AnoPublicacao, StatusReg FROM Livro WHERE StatusReg = 1";
+                    var query = "SELECT Codl, Titulo, Editora, Edicao, AnoPublicacao, StatusReg, DataCriacao FROM Livro WHERE StatusReg = 1";
                     var livro = await connection.QueryAsync<LivroEntity>(query);
                     return livro.ToList();
                 }
@@ -1051,12 +1051,12 @@ namespace Repository
                         try
                         {
                             var query = @"  INSERT INTO Livro_Autor (Livro_Codl, Autor_CodAu, StatusReg, DataCriacao, UltimaAtualizacao) 
-                                            VALUES (@Livro_Codl, @Autor_CodAu, @StatusReg, @DataCriacao, @UltimaAtualizacao);";
+                                            VALUES (@LivroCodl, @AutorCodAu, @StatusReg, @DataCriacao, @UltimaAtualizacao);";
 
                             var parameters = new
                             {
-                                livroAutorEntity.Livro_Codl,
-                                livroAutorEntity.Autor_CodAu,
+                                livroAutorEntity.LivroCodl,
+                                livroAutorEntity.AutorCodAu,
                                 StatusReg = 1,
                                 DataCriacao = DateTime.Now,
                                 UltimaAtualizacao = DateTime.Now
@@ -1095,7 +1095,7 @@ namespace Repository
                 using (var connection = new SqlConnection(_connectionString))
                 {
                     await connection.OpenAsync();
-                    var query = @"  SELECT Livro_Codl, Autor_CodAu, StatusReg
+                    var query = @"  SELECT Livro_Codl as LivroCodl, Autor_CodAu as AutorCodAu, StatusReg
                                       FROM Livro_Autor
                                      WHERE Livro_Codl = @LivroCodl
                                        AND StatusReg = 1";
@@ -1133,13 +1133,13 @@ namespace Repository
                             var query = @"  UPDATE Livro_Autor 
                                             SET StatusReg = 0, 
                                                 UltimaAtualizacao = @UltimaAtualizacao 
-                                            WHERE Livro_Codl = @Livro_Codl AND Autor_CodAu = @Autor_CodAu";
+                                            WHERE Livro_Codl = @Livro_Codl AND Autor_CodAu = @AutorCodAu";
 
                             var parameters = new
                             {
                                 UltimaAtualizacao = DateTime.Now,
                                 Livro_Codl = livroCodl,
-                                Autor_CodAu = autorCodAu
+                                AutorCodAu = autorCodAu
                             };
 
                             var result = await connection.ExecuteAsync(query, parameters, transaction: transaction);
@@ -1189,12 +1189,12 @@ namespace Repository
                         try
                         {
                             var query = @"  INSERT INTO Livro_Assunto (Livro_Codl, Assunto_CodAs, StatusReg, DataCriacao, UltimaAtualizacao) 
-                                            VALUES (@Livro_Codl, @Assunto_CodAs, @StatusReg, @DataCriacao, @UltimaAtualizacao);";
+                                            VALUES (@LivroCodl, @AssuntoCodAs, @StatusReg, @DataCriacao, @UltimaAtualizacao);";
 
                             var parameters = new
                             {
-                                livroAssuntoEntity.Livro_Codl,
-                                livroAssuntoEntity.Assunto_CodAs,
+                                livroAssuntoEntity.LivroCodl,
+                                livroAssuntoEntity.AssuntoCodAs,
                                 StatusReg = 1,
                                 DataCriacao = DateTime.Now,
                                 UltimaAtualizacao = DateTime.Now
@@ -1233,7 +1233,7 @@ namespace Repository
                 {
                     await connection.OpenAsync();
                     var query = @"
-                                    SELECT Livro_Codl, Assunto_CodAs, StatusReg
+                                    SELECT Livro_Codl as LivroCodl, Assunto_CodAs as AssuntoCodAs, StatusReg
                                       FROM Livro_Assunto
                                      WHERE Livro_Codl = @LivroCodl 
                                        AND StatusReg = 1";
@@ -1271,8 +1271,8 @@ namespace Repository
                                 UPDATE Livro_Assunto 
                                 SET StatusReg = 0, 
                                     UltimaAtualizacao = @UltimaAtualizacao 
-                                WHERE Livro_Codl = @Livro_Codl 
-                                  AND Assunto_CodAs = @Assunto_CodAs";
+                                WHERE Livro_Codl = @LivroCodl 
+                                  AND Assunto_CodAs = @AssuntoCodAs";
 
                             var parameters = new
                             {

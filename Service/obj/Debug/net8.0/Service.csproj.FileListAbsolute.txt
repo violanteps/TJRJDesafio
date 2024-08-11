@@ -10,9 +10,9 @@ C:\GIT\TJRJDesafio\TJRJDesafio\Service\obj\Debug\net8.0\Service.GeneratedMSBuild
 C:\GIT\TJRJDesafio\TJRJDesafio\Service\obj\Debug\net8.0\Service.AssemblyInfoInputs.cache
 C:\GIT\TJRJDesafio\TJRJDesafio\Service\obj\Debug\net8.0\Service.AssemblyInfo.cs
 C:\GIT\TJRJDesafio\TJRJDesafio\Service\obj\Debug\net8.0\Service.csproj.CoreCompileInputs.cache
+C:\GIT\TJRJDesafio\TJRJDesafio\Service\obj\Debug\net8.0\Service.sourcelink.json
 C:\GIT\TJRJDesafio\TJRJDesafio\Service\obj\Debug\net8.0\Service.csproj.Up2Date
 C:\GIT\TJRJDesafio\TJRJDesafio\Service\obj\Debug\net8.0\Service.dll
 C:\GIT\TJRJDesafio\TJRJDesafio\Service\obj\Debug\net8.0\refint\Service.dll
 C:\GIT\TJRJDesafio\TJRJDesafio\Service\obj\Debug\net8.0\Service.pdb
 C:\GIT\TJRJDesafio\TJRJDesafio\Service\obj\Debug\net8.0\ref\Service.dll
-C:\GIT\TJRJDesafio\TJRJDesafio\Service\obj\Debug\net8.0\Service.sourcelink.json

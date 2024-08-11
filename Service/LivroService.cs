@@ -21,15 +21,15 @@ namespace Service
                 if (livroEntity.LivroAutores == null || livroEntity.LivroAutores.Count == 0)
                     return false;
 
-                if (livroEntity.LivroAssuntoEntity == null || livroEntity.LivroAssuntoEntity.Assunto_CodAs == 0)
+                if (livroEntity.LivroAssuntoEntity == null || livroEntity.LivroAssuntoEntity.AssuntoCodAs == 0)
                     return false;
 
                 var livroId = await _livroRepository.CreateLivro(livroEntity);
 
                 var livroAssuntoEntity = new LivroAssuntoEntity
                 {
-                    Livro_Codl = livroId,
-                    Assunto_CodAs = livroEntity.LivroAssuntoEntity.Assunto_CodAs,
+                    LivroCodl = livroId,
+                    AssuntoCodAs = livroEntity.LivroAssuntoEntity.AssuntoCodAs,
                     StatusReg = 1
                 };
 
@@ -39,8 +39,8 @@ namespace Service
                 {
                     var livroAutorEntity = new LivroAutorEntity
                     {
-                        Livro_Codl = livroId,
-                        Autor_CodAu = autor.Autor_CodAu,
+                        LivroCodl = livroId,
+                        AutorCodAu = autor.AutorCodAu,
                         StatusReg = 1
                     };
                     _ = await _livroRepository.CreateLivroAutor(livroAutorEntity);
@@ -135,17 +135,72 @@ namespace Service
         {
             try
             {
-                //Atualizar tb a Livro_Autor??
-                //Atualizar a livro assunto???
-                //Atualizar a livro valor???
+                if (livroEntity.LivroAutores == null || livroEntity.LivroAutores.Count == 0)
+                    return false;
+
+                if (livroEntity.LivroAssuntoEntity == null || livroEntity.LivroAssuntoEntity.AssuntoCodAs == 0)
+                    return false;
+
                 var result = await _livroRepository.UpdateLivro(livroEntity);
-                return  true;
+                
+
+                var livroAssuntoAtual = await _livroRepository.GetLivroAssunto(livroEntity.Codl);
+
+                if (livroAssuntoAtual == null || livroAssuntoAtual.AssuntoCodAs != livroEntity.LivroAssuntoEntity.AssuntoCodAs)
+                {
+                    if (livroAssuntoAtual != null)
+                    {
+                        await _livroRepository.DeleteLivroAssunto(livroAssuntoAtual.LivroCodl, livroAssuntoAtual.AssuntoCodAs);
+                    }
+
+                    
+                    var livroAssuntoEntity = new LivroAssuntoEntity
+                    {
+                        LivroCodl = livroEntity.Codl,
+                        AssuntoCodAs = livroEntity.LivroAssuntoEntity.AssuntoCodAs,
+                        StatusReg = 1
+                    };
+
+                    var livroAssuntoCreated = await _livroRepository.CreateLivroAssunto(livroAssuntoEntity);
+                 
+                }
+
+                
+                var autoresAtuais = await _livroRepository.GetLivroAutor(livroEntity.Codl);
+
+                foreach (var autorAtual in autoresAtuais)
+                {
+                    if (!livroEntity.LivroAutores.Any(a => a.AutorCodAu == autorAtual.AutorCodAu))
+                    {
+                        await _livroRepository.DeleteLivroAutor(autorAtual.LivroCodl, autorAtual.AutorCodAu);
+                    }
+                }
+
+                foreach (var autor in livroEntity.LivroAutores)
+                {
+                    if (!autoresAtuais.Any(a => a.AutorCodAu == autor.AutorCodAu))
+                    {
+                        var livroAutorEntity = new LivroAutorEntity
+                        {
+                            LivroCodl = livroEntity.Codl,
+                            AutorCodAu = autor.AutorCodAu,
+                            StatusReg = 1
+                        };
+
+                        var livroAutorCreated = await _livroRepository.CreateLivroAutor(livroAutorEntity);
+                        
+                    }
+                }
+
+                return true;
             }
             catch (Exception ex)
             {
                 return false;
             }
         }
+
+
 
         public async Task<bool> DeleteLivro(LivroEntity livroEntity)
         {
@@ -156,12 +211,12 @@ namespace Service
                 var livroAutores = await _livroRepository.GetLivroAutor(livroEntity.Codl);
 
                 if (livroAssunto != null)
-                    _ = await _livroRepository.DeleteLivroAssunto(livroAssunto.Livro_Codl, livroAssunto.Assunto_CodAs);
+                    _ = await _livroRepository.DeleteLivroAssunto(livroAssunto.LivroCodl, livroAssunto.AssuntoCodAs);
 
                 if (livroAssunto != null)
                     foreach (var livroAutor in livroAutores)
                     {
-                        _ = await _livroRepository.DeleteLivroAutor(livroAutor.Livro_Codl, livroAutor.Autor_CodAu);
+                        _ = await _livroRepository.DeleteLivroAutor(livroAutor.LivroCodl, livroAutor.AutorCodAu);
                     }
 
                 _ = await _livroRepository.DeleteLivro(livroEntity);

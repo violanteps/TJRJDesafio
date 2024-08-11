@@ -7,6 +7,8 @@ C:\GIT\TJRJDesafio\TJRJDesafio\BackEnd.API\bin\Debug\net8.0\BackEnd.API.dll
 C:\GIT\TJRJDesafio\TJRJDesafio\BackEnd.API\bin\Debug\net8.0\BackEnd.API.pdb
 C:\GIT\TJRJDesafio\TJRJDesafio\BackEnd.API\bin\Debug\net8.0\AutoMapper.dll
 C:\GIT\TJRJDesafio\TJRJDesafio\BackEnd.API\bin\Debug\net8.0\Dapper.dll
+C:\GIT\TJRJDesafio\TJRJDesafio\BackEnd.API\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\GIT\TJRJDesafio\TJRJDesafio\BackEnd.API\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
 C:\GIT\TJRJDesafio\TJRJDesafio\BackEnd.API\bin\Debug\net8.0\Microsoft.OpenApi.dll
 C:\GIT\TJRJDesafio\TJRJDesafio\BackEnd.API\bin\Debug\net8.0\Newtonsoft.Json.dll
 C:\GIT\TJRJDesafio\TJRJDesafio\BackEnd.API\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
@@ -31,6 +33,7 @@ C:\GIT\TJRJDesafio\TJRJDesafio\BackEnd.API\obj\Debug\net8.0\BackEnd.API.Assembly
 C:\GIT\TJRJDesafio\TJRJDesafio\BackEnd.API\obj\Debug\net8.0\BackEnd.API.csproj.CoreCompileInputs.cache
 C:\GIT\TJRJDesafio\TJRJDesafio\BackEnd.API\obj\Debug\net8.0\BackEnd.API.MvcApplicationPartsAssemblyInfo.cs
 C:\GIT\TJRJDesafio\TJRJDesafio\BackEnd.API\obj\Debug\net8.0\BackEnd.API.MvcApplicationPartsAssemblyInfo.cache
+C:\GIT\TJRJDesafio\TJRJDesafio\BackEnd.API\obj\Debug\net8.0\BackEnd.API.sourcelink.json
 C:\GIT\TJRJDesafio\TJRJDesafio\BackEnd.API\obj\Debug\net8.0\staticwebassets.build.json
 C:\GIT\TJRJDesafio\TJRJDesafio\BackEnd.API\obj\Debug\net8.0\staticwebassets.development.json
 C:\GIT\TJRJDesafio\TJRJDesafio\BackEnd.API\obj\Debug\net8.0\staticwebassets\msbuild.BackEnd.API.Microsoft.AspNetCore.StaticWebAssets.props
@@ -45,6 +48,3 @@ C:\GIT\TJRJDesafio\TJRJDesafio\BackEnd.API\obj\Debug\net8.0\refint\BackEnd.API.d
 C:\GIT\TJRJDesafio\TJRJDesafio\BackEnd.API\obj\Debug\net8.0\BackEnd.API.pdb
 C:\GIT\TJRJDesafio\TJRJDesafio\BackEnd.API\obj\Debug\net8.0\BackEnd.API.genruntimeconfig.cache
 C:\GIT\TJRJDesafio\TJRJDesafio\BackEnd.API\obj\Debug\net8.0\ref\BackEnd.API.dll
-C:\GIT\TJRJDesafio\TJRJDesafio\BackEnd.API\obj\Debug\net8.0\BackEnd.API.sourcelink.json
-C:\GIT\TJRJDesafio\TJRJDesafio\BackEnd.API\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
-C:\GIT\TJRJDesafio\TJRJDesafio\BackEnd.API\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
