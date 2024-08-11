@@ -18,6 +18,7 @@ namespace BackEnd.API.Controllers
             _logger = logger;
             _livroService = livroService;
         }
+
         [HttpGet]
         [Route("RelatorioEstoque/{tipoRelatorio}")]
         public async Task<IActionResult> GetRelatorioEstoque(int tipoRelatorio)
@@ -52,5 +53,28 @@ namespace BackEnd.API.Controllers
                 return StatusCode(500, "Erro ao gerar o relatório.");
             }
         }
-    }
+
+        [HttpGet]
+        [Route("GetRelatoriosList")]
+        public IActionResult GetRelatoriosList()
+        {
+            try
+            {
+                var relatorios = new List<object>
+                {
+                    new { tipoRel = 1, assunto = "Relatório por Autor e Assunto" },
+                    new { tipoRel = 2, assunto = "Relatório por Autor e Valor" },
+                    new { tipoRel = 3, assunto = "Relatório por Assunto e Valor" }
+                };
+
+                return Ok(relatorios);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao obter a lista de relatórios.");
+                return StatusCode(500, "Erro ao obter a lista de relatórios.");
+            }
+        }
+        }
+
 }
