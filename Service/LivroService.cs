@@ -98,8 +98,8 @@ namespace Service
                 var retGetLivroList = await _livroRepository.GetLivroList();
 
                 if (retGetLivroList == null || retGetLivroList.Count == 0)
-                    return new List<LivroEntity>(); 
-                
+                    return new List<LivroEntity>();
+
 
                 var result = new List<LivroEntity>();
 
@@ -116,6 +116,7 @@ namespace Service
                         Edicao = livro.Edicao,
                         AnoPublicacao = livro.AnoPublicacao,
                         StatusReg = livro.StatusReg,
+                        DataCriacao = livro.DataCriacao,
                         LivroAssuntoEntity = retLivroAssunto,
                         LivroAutores = retLivroAutor.ToList()
                     };
@@ -142,7 +143,7 @@ namespace Service
                     return false;
 
                 var result = await _livroRepository.UpdateLivro(livroEntity);
-                
+
 
                 var livroAssuntoAtual = await _livroRepository.GetLivroAssunto(livroEntity.Codl);
 
@@ -153,7 +154,7 @@ namespace Service
                         await _livroRepository.DeleteLivroAssunto(livroAssuntoAtual.LivroCodl, livroAssuntoAtual.AssuntoCodAs);
                     }
 
-                    
+
                     var livroAssuntoEntity = new LivroAssuntoEntity
                     {
                         LivroCodl = livroEntity.Codl,
@@ -162,10 +163,10 @@ namespace Service
                     };
 
                     var livroAssuntoCreated = await _livroRepository.CreateLivroAssunto(livroAssuntoEntity);
-                 
+
                 }
 
-                
+
                 var autoresAtuais = await _livroRepository.GetLivroAutor(livroEntity.Codl);
 
                 foreach (var autorAtual in autoresAtuais)
@@ -188,7 +189,7 @@ namespace Service
                         };
 
                         var livroAutorCreated = await _livroRepository.CreateLivroAutor(livroAutorEntity);
-                        
+
                     }
                 }
 
@@ -394,6 +395,20 @@ namespace Service
             }
         }
 
+        public async Task<TipoVendaEntity> GetTipoVendaList(TipoVendaEntity tipoVendaEntity)
+        {
+            try
+            {
+                var result = await _livroRepository.GetTipoVenda(tipoVendaEntity);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"Erro ao obter TipoVenda: {ex.Message}");
+            }
+        }
+
+
         public async Task<bool> UpdateTipoVenda(TipoVendaEntity tipoVendaEntity)
         {
             try
@@ -421,6 +436,76 @@ namespace Service
                 return false;
             }
         }
+
+
+        public async Task<bool> CreateLivroValor(LivroValorEntity livroValorEntity)
+        {
+            try
+            {
+                var result = await _livroRepository.CreateLivroValor(livroValorEntity);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public async Task<LivroValorEntity> GetLivroValor(int livroCodl)
+        {
+            try
+            {
+                var result = await _livroRepository.GetLivroValor(livroCodl);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"Erro ao obter TipoVenda: {ex.Message}");
+            }
+        }
+
+        public async Task<List<LivroValorEntity>> GetLivroValorList()
+        {
+            try
+            {
+                var result = await _livroRepository.GetLivroValorList();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"Erro ao obter TipoVenda: {ex.Message}");
+            }
+        }
+
+
+        public async Task<bool> UpdateLivroValor(LivroValorEntity livroValorEntity)
+        {
+            try
+            {
+                //Atualizar a livro_valor
+                var result = await _livroRepository.UpdateLivroValor(livroValorEntity);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> DeleteLivroValor(int livroCodl, int vendaCodv)
+        {
+            try
+            {
+                //Atualizo Livro valor
+                var result = await _livroRepository.DeleteLivroValor(livroCodl, vendaCodv);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
 
 
         public async Task<List<RelLivrosPorAutorComAssuntoDTO>> GerarRelatorioPorAutorComAssunto(int tipoRelatorio)

@@ -1,6 +1,6 @@
-﻿namespace Domain.Entity
+﻿namespace Domain.Model
 {
-    public class LivroValorEntity
+    public class LivroValorModel
     {
         public int Livro_Codl { get; set; }
 

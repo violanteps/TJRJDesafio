@@ -837,7 +837,7 @@ namespace Repository
         }
 
 
-        public async Task<int> CreateLivroValor(LivroValorEntity livroValorEntity)
+        public async Task<int> CreateLivroValor(LivroValorModel livroValorEntity)
         {
             try
             {
@@ -893,7 +893,7 @@ namespace Repository
             }
         }
 
-        public async Task<LivroValorEntity> GetLivroValor(int livroCodl, int vendaCodv)
+        public async Task<LivroValorModel> GetLivroValor(int livroCodl)
         {
             try
             {
@@ -901,9 +901,9 @@ namespace Repository
                 {
                     var query = @"  SELECT Livro_Codl, Venda_Codv, Valor_Venda, StatusReg 
                                     FROM Livro_Valor 
-                                    WHERE Livro_Codl = @Livro_Codl AND Venda_Codv = @Venda_Codv AND StatusReg = 1";
+                                    WHERE Livro_Codl = @Livro_Codl AND StatusReg = 1";
 
-                    var livroValor = await connection.QuerySingleOrDefaultAsync<LivroValorEntity>(query, new { Livro_Codl = livroCodl, Venda_Codv = vendaCodv });
+                    var livroValor = await connection.QuerySingleOrDefaultAsync<LivroValorModel>(query, new { Livro_Codl = livroCodl});
 
                     return livroValor;
                 }
@@ -918,7 +918,32 @@ namespace Repository
             }
         }
 
-        public async Task<string> UpdateLivroValor(LivroValorEntity livroValorEntity)
+        public async Task<List<LivroValorModel>> GetLivroValorList()
+        {
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    var query = @"  SELECT Livro_Codl, Venda_Codv, Valor_Venda, StatusReg 
+                                    FROM Livro_Valor 
+                                    WHERE Livro_Codl = @Livro_Codl AND Venda_Codv = @Venda_Codv AND StatusReg = 1";
+
+                    var livroValor = await connection.QueryAsync<LivroValorModel>(query);
+
+                    return livroValor.ToList();
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("Erro de banco de dados: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro: " + ex.Message);
+            }
+        }
+
+        public async Task<string> UpdateLivroValor(LivroValorModel livroValorEntity)
         {
             try
             {

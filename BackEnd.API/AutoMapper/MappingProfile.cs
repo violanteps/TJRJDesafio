@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Domain.Entity;
+using Domain.Model;
 
 namespace BackEnd.API.AutoMapper
 {
@@ -10,7 +11,7 @@ namespace BackEnd.API.AutoMapper
             CreateMap<LivroModel, LivroEntity>();
             CreateMap<AutorModel, AutorEntity>();
             CreateMap<AssuntoModel, AssuntoEntity>();
-
+            CreateMap<LivroValorModel, LivroValorEntity>();
         }
 
     }

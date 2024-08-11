@@ -1,4 +1,6 @@
-﻿namespace Domain.Entity
+﻿using Domain.Entity;
+
+namespace Domain.Model
 {
     public class LivroModel
     {
