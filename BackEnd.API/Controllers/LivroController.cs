@@ -69,7 +69,7 @@ namespace BackEnd.API.Controllers
         {
             try
             {
-               
+
                 var ret = await _livroService.GetLivroList();
 
                 if (ret == null)

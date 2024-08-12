@@ -41,9 +41,8 @@ namespace BackEnd.API.Controllers
 
                 
                 if (relatorio == null || !relatorio.Any())
-                {
                     return NotFound("Relatório não encontrado.");
-                }
+                
 
                 return Ok(relatorio);
             }
@@ -63,8 +62,7 @@ namespace BackEnd.API.Controllers
                 var relatorios = new List<object>
                 {
                     new { tipoRel = 1, assunto = "Relatório por Autor e Assunto" },
-                    new { tipoRel = 2, assunto = "Relatório por Autor e Valor" },
-                    new { tipoRel = 3, assunto = "Relatório por Assunto e Valor" }
+                    new { tipoRel = 2, assunto = "Relatório por Autor e Valor" },  
                 };
 
                 return Ok(relatorios);

@@ -6,6 +6,5 @@
 
         public string Descricao { get; set; }
 
-        //public List<LivroAssuntoEntity> LivroAssuntos { get; set; }
     }
 }

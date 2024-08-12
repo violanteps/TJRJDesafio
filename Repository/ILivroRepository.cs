@@ -1,57 +1,59 @@
 ﻿using Domain.Dtos;
 using Domain.Entity;
+using System.Data;
 
 namespace Repository
 {
     public interface ILivroRepository
     {
-        Task<int> CreateLivro(LivroEntity livroEntity);
+        Task<int> CreateLivro(LivroEntity livroEntity, IDbTransaction transaction);
         Task<LivroEntity> GetLivro(LivroEntity param);
         Task<List<LivroEntity>> GetLivroList();
-        Task<string> UpdateLivro(LivroEntity param);
-        Task<string> DeleteLivro(LivroEntity param);
+        Task<bool> UpdateLivro(LivroEntity param, IDbTransaction transaction);
+        Task<bool> DeleteLivro(LivroEntity param, IDbTransaction transaction);
 
 
-        Task<int> CreateAssunto(AssuntoEntity param);
-        Task<AssuntoEntity> GetAssunto(AssuntoEntity assuntoEntity);
+        Task<int> CreateAssunto(AssuntoEntity param, IDbTransaction transaction);
+        Task<AssuntoEntity> GetAssunto(AssuntoEntity param);
         Task<List<AssuntoEntity>> GetAssuntoList();
-        Task<string> UpdateAssunto(AssuntoEntity param);
-        Task<string> DeleteAssunto(AssuntoEntity param);
+        Task<bool> UpdateAssunto(AssuntoEntity param, IDbTransaction transaction);
+        Task<bool> DeleteAssunto(AssuntoEntity param, IDbTransaction transaction);
 
 
-        Task<int> CreateAutor(AutorEntity param);
+        Task<int> CreateAutor(AutorEntity param, IDbTransaction transaction);
         Task<AutorEntity> GetAutor(AutorEntity param);
         Task<List<AutorEntity>> GetAutorList();
-        Task<string> UpdateAutor(AutorEntity param);
-        Task<string> DeleteAutor(AutorEntity param);
+        Task<bool> UpdateAutor(AutorEntity param, IDbTransaction transaction);
+        Task<bool> DeleteAutor(AutorEntity param, IDbTransaction transaction);
 
 
-        Task<int> CreateTipoVenda(TipoVendaEntity tipoVendaEntity);
+        Task<int> CreateTipoVenda(TipoVendaEntity tipoVendaEntity, IDbTransaction transaction);
         Task<TipoVendaEntity> GetTipoVenda(TipoVendaEntity tipoVendaEntity);
         Task<List<TipoVendaEntity>> GetTipoVendaList();
-        Task<string> UpdateTipoVenda(TipoVendaEntity tipoVendaEntity);
-        Task<string> DeleteTipoVenda(TipoVendaEntity tipoVendaEntity);
+        Task<bool> UpdateTipoVenda(TipoVendaEntity tipoVendaEntity, IDbTransaction transaction);
+        Task<bool> DeleteTipoVenda(TipoVendaEntity tipoVendaEntity, IDbTransaction transaction);
 
 
-        Task<bool> CreateLivroValor(LivroValorEntity livroValorEntity);
+        Task<bool> CreateLivroValor(LivroValorEntity livroValorEntity, IDbTransaction transaction);
         Task<List<LivroValorEntity>> GetLivroValor(int livroCodl);
         Task<List<LivroValorEntity>> GetLivroValorList();
-        Task<string> UpdateLivroValor(LivroValorEntity livroValorEntity);
-        Task<string> DeleteLivroValor(int livroCodl, int vendaCodv);
+        Task<bool> UpdateLivroValor(LivroValorEntity livroValorEntity, IDbTransaction transaction);
+        Task<bool> DeleteLivroValor(int livroCodl, int vendaCodv, IDbTransaction transaction);
 
 
-        Task<int> CreateLivroAutor(LivroAutorEntity livroAutorEntity);
+        Task<int> CreateLivroAutor(LivroAutorEntity livroAutorEntity, IDbTransaction transaction);
         Task<IEnumerable<LivroAutorEntity>> GetLivroAutor(int livroCodl);
-        Task<string> DeleteLivroAutor(int livroCodl, int autorCodAu);
+        Task<IEnumerable<LivroAutorEntity>> GetLivroAutor(int livroCodl, IDbTransaction transaction = null);
+        Task<bool> DeleteLivroAutor(int livroCodl, int autorCodAu, IDbTransaction transaction);
 
 
-        Task<int> CreateLivroAssunto(LivroAssuntoEntity livroAssuntoEntity);
+        Task<int> CreateLivroAssunto(LivroAssuntoEntity livroAssuntoEntity, IDbTransaction transaction);
         Task<LivroAssuntoEntity> GetLivroAssunto(int livroCodl);
-        Task<string> DeleteLivroAssunto(int livroCodl, int assuntoCodAs);
+        Task<LivroAssuntoEntity> GetLivroAssunto(int livroCodl, IDbTransaction transaction = null);
+        Task<bool> DeleteLivroAssunto(int livroCodl, int assuntoCodAs, IDbTransaction transaction);
 
 
         Task<List<RelLivrosPorAutorComValorETipoVendaDTO>> GerarRelatorioPorAutorComValor(int tipoRelatorio);
         Task<List<RelLivrosPorAutorComAssuntoDTO>> GerarRelatorioPorAutorComAssunto(int tipoRelatorio);
-
     }
 }
