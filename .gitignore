@@ -362,3 +362,12 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /src/SISCORWEBWS.WEBAPI/.config
+/Service/obj/Debug/net8.0/Service.assets.cache
+/Service/obj/Debug/net8.0/Service.csproj.FileListAbsolute.txt
+/Repository/obj/Debug/net8.0/Repository.csproj.FileListAbsolute.txt
+/Repository/obj/Debug/net8.0/Repository.assets.cache
+/Domain/obj/Debug/net8.0/Domain.assets.cache
+/Domain/obj/Debug/net8.0/Domain.csproj.FileListAbsolute.txt
+/Database/obj/Debug/Database.sqlproj.FileListAbsolute.txt
+/BackEnd.API/obj/Debug/net8.0/BackEnd.API.csproj.FileListAbsolute.txt
+/BackEnd.API/obj/Debug/net8.0/BackEnd.API.assets.cache
