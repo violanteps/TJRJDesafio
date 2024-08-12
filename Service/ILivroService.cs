@@ -28,13 +28,13 @@ namespace Service
 
         Task<bool> CreateTipoVenda(TipoVendaEntity tipoVendaEntity);
         Task<TipoVendaEntity> GetTipoVenda(TipoVendaEntity tipoVendaEntity);
-        Task<TipoVendaEntity> GetTipoVendaList(TipoVendaEntity tipoVendaEntity);
+        Task<List<TipoVendaEntity>> GetTipoVendaList();
         Task<bool> UpdateTipoVenda(TipoVendaEntity tipoVendaEntity);
         Task<bool> DeleteTipoVenda(TipoVendaEntity tipoVendaEntity);
 
 
         Task<bool> CreateLivroValor(LivroValorEntity livroValorEntity);
-        Task<LivroValorEntity> GetLivroValor(int livroCodl);
+        Task<List<LivroValorEntity>> GetLivroValor(int livroCodl);
         Task<List<LivroValorEntity>> GetLivroValorList();
         Task<bool> UpdateLivroValor(LivroValorEntity livroValorEntity);
         Task<bool> DeleteLivroValor(int livroCodl, int vendaCodv);

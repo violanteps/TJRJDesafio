@@ -724,6 +724,26 @@ namespace Repository
             }
         }
 
+        public async Task<List<TipoVendaEntity>> GetTipoVendaList()
+        {
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    var query = "SELECT * FROM Tipo_Venda WHERE StatusReg = 1";
+                    var tipoVenda = await connection.QueryAsync<TipoVendaEntity>(query);
+                    return tipoVenda.ToList();
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("Erro de banco de dados: " + ex.Message, ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao buscar o tipo de venda: " + ex.Message, ex);
+            }
+        }
 
         public async Task<string> UpdateTipoVenda(TipoVendaEntity tipoVendaEntity)
         {
@@ -837,7 +857,7 @@ namespace Repository
         }
 
 
-        public async Task<int> CreateLivroValor(LivroValorModel livroValorEntity)
+        public async Task<bool> CreateLivroValor(LivroValorEntity livroValorEntity)
         {
             try
             {
@@ -849,37 +869,32 @@ namespace Repository
                     {
                         try
                         {
-                            var query = @"
-                        INSERT INTO Livro_Valor (Livro_Codl, Venda_Codv, Valor_Venda, StatusReg, DataCriacao, UltimaAtualizacao) 
-                        VALUES (@Livro_Codl, @Venda_Codv, @Valor_Venda, @StatusReg, @DataCriacao, @UltimaAtualizacao);
-                        SELECT CAST(SCOPE_IDENTITY() as int);";
+                            var query = @"INSERT INTO Livro_Valor (Livro_Codl, Venda_Codv, Valor_Venda, StatusReg, DataCriacao, UltimaAtualizacao) 
+                                  VALUES (@LivroCodl, @VendaCodv, @ValorVenda, @StatusReg, @DataCriacao, @UltimaAtualizacao);";
 
                             var parameters = new
                             {
-                                livroValorEntity.Livro_Codl,
-                                livroValorEntity.Venda_Codv,
-                                livroValorEntity.Valor_venda,
+                                livroValorEntity.LivroCodl,
+                                livroValorEntity.VendaCodv,
+                                livroValorEntity.ValorVenda,
                                 StatusReg = 1,
                                 DataCriacao = DateTime.Now,
                                 UltimaAtualizacao = DateTime.Now
                             };
 
-                            var livroValorId = await connection.QuerySingleAsync<int>(query, parameters, transaction: transaction);
-
+                            var ret = await connection.ExecuteAsync(query, parameters, transaction: transaction);
 
                             transaction.Commit();
 
-                            return livroValorId;
+                            return ret > 0;
                         }
                         catch (SqlException ex)
                         {
-
                             transaction.Rollback();
                             throw new Exception("Erro de banco de dados: " + ex.Message);
                         }
                         catch (Exception ex)
                         {
-
                             transaction.Rollback();
                             throw new Exception("Erro: " + ex.Message);
                         }
@@ -888,47 +903,26 @@ namespace Repository
             }
             catch (Exception ex)
             {
-
                 throw new Exception("Erro ao tentar iniciar a transação: " + ex.Message);
             }
         }
 
-        public async Task<LivroValorModel> GetLivroValor(int livroCodl)
+
+        public async Task<List<LivroValorEntity>> GetLivroValor(int livroCodl)
         {
             try
             {
                 using (var connection = new SqlConnection(_connectionString))
                 {
-                    var query = @"  SELECT Livro_Codl, Venda_Codv, Valor_Venda, StatusReg 
-                                    FROM Livro_Valor 
-                                    WHERE Livro_Codl = @Livro_Codl AND StatusReg = 1";
+                    var query = @"   SELECT Livro_Codl as LivroCodl,
+                                           Venda_Codv as VendaCodv,
+                                           CAST(Valor_Venda AS DECIMAL(10, 2)) as ValorVenda,
+                                           StatusReg as StatusReg
+                                           FROM Livro_Valor 
+                                           where Livro_Codl = @LivroCodl
+                                           and StatusReg = 1;";
 
-                    var livroValor = await connection.QuerySingleOrDefaultAsync<LivroValorModel>(query, new { Livro_Codl = livroCodl});
-
-                    return livroValor;
-                }
-            }
-            catch (SqlException ex)
-            {
-                throw new Exception("Erro de banco de dados: " + ex.Message);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Erro: " + ex.Message);
-            }
-        }
-
-        public async Task<List<LivroValorModel>> GetLivroValorList()
-        {
-            try
-            {
-                using (var connection = new SqlConnection(_connectionString))
-                {
-                    var query = @"  SELECT Livro_Codl, Venda_Codv, Valor_Venda, StatusReg 
-                                    FROM Livro_Valor 
-                                    WHERE Livro_Codl = @Livro_Codl AND Venda_Codv = @Venda_Codv AND StatusReg = 1";
-
-                    var livroValor = await connection.QueryAsync<LivroValorModel>(query);
+                    var livroValor = await connection.QueryAsync<LivroValorEntity>(query, new { LivroCodl = livroCodl});
 
                     return livroValor.ToList();
                 }
@@ -943,7 +937,35 @@ namespace Repository
             }
         }
 
-        public async Task<string> UpdateLivroValor(LivroValorModel livroValorEntity)
+        public async Task<List<LivroValorEntity>> GetLivroValorList()
+        {
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    var query = @"  SELECT Livro_Codl as LivroCodl,
+                                           Venda_Codv as VendaCodv,
+                                           CAST(Valor_Venda AS DECIMAL(10, 2)) as ValorVenda,
+                                           StatusReg as StatusReg
+                                           FROM Livro_Valor 
+                                           WHERE StatusReg = 1;";
+
+                    var livroValor = await connection.QueryAsync<LivroValorEntity>(query);
+
+                    return livroValor.ToList();
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("Erro de banco de dados: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro: " + ex.Message);
+            }
+        }
+
+        public async Task<string> UpdateLivroValor(LivroValorEntity livroValorEntity)
         {
             try
             {
@@ -956,17 +978,17 @@ namespace Repository
                         try
                         {
                             var query = @"
-                        UPDATE Livro_Valor 
-                        SET Valor_Venda = @Valor_Venda, 
-                            UltimaAtualizacao = @UltimaAtualizacao 
-                        WHERE Livro_Codl = @Livro_Codl AND Venda_Codv = @Venda_Codv";
+                                            UPDATE Livro_Valor 
+                                            SET Valor_Venda = @ValorVenda, 
+                                                UltimaAtualizacao = @UltimaAtualizacao 
+                                            WHERE Livro_Codl = @LivroCodl AND Venda_Codv = @VendaCodv";
 
                             var parameters = new
                             {
-                                livroValorEntity.Valor_venda,
+                                livroValorEntity.ValorVenda,
                                 UltimaAtualizacao = DateTime.Now,
-                                livroValorEntity.Livro_Codl,
-                                livroValorEntity.Venda_Codv
+                                livroValorEntity.LivroCodl,
+                                livroValorEntity.VendaCodv
                             };
 
                             var result = await connection.ExecuteAsync(query, parameters, transaction: transaction);
@@ -1019,13 +1041,13 @@ namespace Repository
                             var query = @"  UPDATE Livro_Valor 
                                             SET StatusReg = 0, 
                                                 UltimaAtualizacao = @UltimaAtualizacao 
-                                            WHERE Livro_Codl = @Livro_Codl AND Venda_Codv = @Venda_Codv";
+                                            WHERE Livro_Codl = @LivroCodl AND Venda_Codv = @VendaCodv";
 
                             var parameters = new
                             {
                                 UltimaAtualizacao = DateTime.Now,
-                                Livro_Codl = livroCodl,
-                                Venda_Codv = vendaCodv
+                                LivroCodl = livroCodl,
+                                VendaCodv = vendaCodv
                             };
 
                             var result = await connection.ExecuteAsync(query, parameters, transaction: transaction);

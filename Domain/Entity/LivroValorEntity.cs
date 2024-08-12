@@ -2,14 +2,13 @@
 {
     public class LivroValorEntity
     {
-        public int Livro_Codl { get; set; }
+        public int LivroCodl { get; set; }
 
-        public int Venda_Codv { get; set; }
+        public int VendaCodv { get; set; }
 
-        public int Valor_venda { get; set; }
+        public decimal ValorVenda { get; set; }
 
         public int StatusReg { get; set; }
-
 
     }
 }

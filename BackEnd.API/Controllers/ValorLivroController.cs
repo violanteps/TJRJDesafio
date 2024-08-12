@@ -86,13 +86,13 @@ namespace BackEnd.API.Controllers
         }
 
         [HttpGet]
-        [Route("GetTipoVendaiList")]
-        public async Task<IActionResult> GetTipoVendaiList()
+        [Route("GetTipoVendaList")]
+        public async Task<IActionResult> GetTipoVendaList()
         {
             try
             {
 
-                var ret = await _livroService.GetLivroList();
+                var ret = await _livroService.GetTipoVendaList();
 
                 if (ret == null)
                 {
@@ -111,30 +111,28 @@ namespace BackEnd.API.Controllers
 
         [HttpPost]
         [Route("UpdateLivroValor")]
-        public async Task<IActionResult> UpdateLivro(LivroModel parameters)
+        public async Task<IActionResult> UpdateLivroValor(LivroValorModel parameters)
         {
             try
             {
-                var resultMapper = _mapper.Map<LivroEntity>(parameters);
-                var ret = await _livroService.UpdateLivro(resultMapper);
+                var resultMapper = _mapper.Map<LivroValorEntity>(parameters);
+                var ret = await _livroService.UpdateLivroValor(resultMapper);
                 return Ok(ret);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro ao atualizar livro");
-                return StatusCode(500, "Erro ao atualizar livro");
+                _logger.LogError(ex, "Erro ao criar livro");
+                return StatusCode(500, "Erro ao criar livro");
             }
         }
 
         [HttpDelete]
         [Route("DeleteLivroValor")]
-        public async Task<IActionResult> DeleteLivro([FromQuery] int codl)
+        public async Task<IActionResult> DeleteLivro([FromQuery] int livroCodl, int vendaCodv)
         {
             try
             {
-                var parameters = new LivroModel { Codl = codl };
-                var resultMapper = _mapper.Map<LivroEntity>(parameters);
-                var ret = await _livroService.DeleteLivro(resultMapper);
+                var ret = await _livroService.DeleteLivroValor(livroCodl, vendaCodv);
                 return Ok(ret);
             }
             catch (Exception ex)

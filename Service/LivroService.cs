@@ -395,11 +395,11 @@ namespace Service
             }
         }
 
-        public async Task<TipoVendaEntity> GetTipoVendaList(TipoVendaEntity tipoVendaEntity)
+        public async Task<List<TipoVendaEntity>> GetTipoVendaList()
         {
             try
             {
-                var result = await _livroRepository.GetTipoVenda(tipoVendaEntity);
+                var result = await _livroRepository.GetTipoVendaList();
                 return result;
             }
             catch (Exception ex)
@@ -451,7 +451,7 @@ namespace Service
             }
         }
 
-        public async Task<LivroValorEntity> GetLivroValor(int livroCodl)
+        public async Task<List<LivroValorEntity>> GetLivroValor(int livroCodl)
         {
             try
             {
@@ -496,7 +496,6 @@ namespace Service
         {
             try
             {
-                //Atualizo Livro valor
                 var result = await _livroRepository.DeleteLivroValor(livroCodl, vendaCodv);
                 return true;
             }

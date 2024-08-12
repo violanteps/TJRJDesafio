@@ -1,6 +1,5 @@
 ﻿using Domain.Dtos;
 using Domain.Entity;
-using Domain.Model;
 
 namespace Repository
 {
@@ -29,22 +28,23 @@ namespace Repository
 
         Task<int> CreateTipoVenda(TipoVendaEntity tipoVendaEntity);
         Task<TipoVendaEntity> GetTipoVenda(TipoVendaEntity tipoVendaEntity);
+        Task<List<TipoVendaEntity>> GetTipoVendaList();
         Task<string> UpdateTipoVenda(TipoVendaEntity tipoVendaEntity);
         Task<string> DeleteTipoVenda(TipoVendaEntity tipoVendaEntity);
 
 
-        Task<int> CreateLivroValor(LivroValorEntity livroValorEntity);
-        Task<LivroValorEntity> GetLivroValor(int livroCodl);
+        Task<bool> CreateLivroValor(LivroValorEntity livroValorEntity);
+        Task<List<LivroValorEntity>> GetLivroValor(int livroCodl);
         Task<List<LivroValorEntity>> GetLivroValorList();
         Task<string> UpdateLivroValor(LivroValorEntity livroValorEntity);
         Task<string> DeleteLivroValor(int livroCodl, int vendaCodv);
 
-        
+
         Task<int> CreateLivroAutor(LivroAutorEntity livroAutorEntity);
         Task<IEnumerable<LivroAutorEntity>> GetLivroAutor(int livroCodl);
         Task<string> DeleteLivroAutor(int livroCodl, int autorCodAu);
 
-        
+
         Task<int> CreateLivroAssunto(LivroAssuntoEntity livroAssuntoEntity);
         Task<LivroAssuntoEntity> GetLivroAssunto(int livroCodl);
         Task<string> DeleteLivroAssunto(int livroCodl, int assuntoCodAs);
